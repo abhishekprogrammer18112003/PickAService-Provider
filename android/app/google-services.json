@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376841969111",
+    "project_id": "pickaservice-93d67",
+    "storage_bucket": "pickaservice-93d67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376841969111:android:36101602301cf25139bf92",
+        "android_client_info": {
+          "package_name": "com.abhion.pickaservice.pick_a_service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvXPIAkfGe-jt0svWRGdC9wMU1L_eceIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

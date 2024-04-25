@@ -1,0 +1,305 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
+
+import 'package:flutter/material.dart';
+import 'package:pick_a_service/core/constants/app_data.dart';
+import 'package:pick_a_service/core/constants/app_icons.dart';
+import 'package:pick_a_service/core/utils/custom_spacers.dart';
+import 'package:pick_a_service/core/utils/screen_utils.dart';
+import 'package:pick_a_service/features/home/models/notification_model.dart';
+import 'package:pick_a_service/main.dart';
+import 'package:pick_a_service/ui/global%20widegts/acceptrejectwidget.dart';
+
+import '../../../core/constants/app_colors.dart';
+
+class NotificationCardWidget extends StatefulWidget {
+  NotificationModel data;
+  NotificationCardWidget({super.key , required this.data});
+
+  @override
+  State<NotificationCardWidget> createState() => _NotificationCardWidgetState();
+}
+
+class _NotificationCardWidgetState extends State<NotificationCardWidget> {
+  List<int> rgba = [];
+  String date = "";
+  String time =  "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+     rgba = AppData.hexToRgba(widget.data.color);
+  
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return lang == "en" ? Padding(
+      padding: const EdgeInsets.symmetric(horizontal :16.0),
+      child: Container(
+        width: 343.w,
+        height: 283.h,
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 218, 218, 218),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: Offset(0, 5), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            _buildTopWidgetEn(),
+            _buildbottomWidgetEn(),
+          ],
+        ),
+      ),
+    ) : Padding(
+      padding: const EdgeInsets.symmetric(horizontal :16.0),
+      child: Container(
+        width: 343.w,
+        height: 283.h,
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 218, 218, 218),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: Offset(0, 5), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            _buildTopWidgetAr(),
+            _buildbottomWidgetAr(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildTopWidgetEn() => Container(
+        height: 60.h,
+        width: 343.w,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, rgba[0], rgba[1], rgba[2]),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppIcons.airconditioning,
+                        height: 22.h,
+                        width: 30.w,
+                      ),
+                      CustomSpacers.width14,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.data.CategoryNameEn,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.secondary),
+                          ),
+                          Text(
+                            widget.data.SubCategoryNameEn,
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.secondary),
+                          )
+                        ],
+                      ),
+                    ]),
+              ),
+              Icon(
+                Icons.more_vert,
+                color: AppColors.secondary,
+              )
+            ],
+          ),
+        ),
+      );
+
+  _buildbottomWidgetEn() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 13),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildWidget("Order", widget.data.ticketNo),
+                _buildWidget("Date", widget.data.date),
+                _buildWidget("Time", widget.data.time),
+              ],
+            ),
+            CustomSpacers.height16,
+            Divider(
+              thickness: 2,
+            ),
+            CustomSpacers.height16,
+            _buildRowWidget("Name", ":  ${widget.data.Fullname}" ),
+            CustomSpacers.height8,
+              _buildRowWidget("Mobile Number", ":  ${widget.data.PhoneNo}"),
+            CustomSpacers.height8,
+            _buildRowWidget("Address", ":  Contonment trichy - 6200001"),
+
+
+            CustomSpacers.height16,
+
+            AcceptRejectWidget(id : widget.data.ticketId)
+          ],
+        ),
+      );
+
+  _buildRowWidget(String title, String value) => Row(
+        children: [
+          SizedBox(
+              width: 105.w,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 12.w,
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
+          SizedBox(
+            width: 188.w,
+            child: Text(value,
+                style: TextStyle(
+                    fontSize: 12.w,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey)),
+          )
+        ],
+      );
+
+  _buildWidget(String title, String subtitle) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 16.h, fontWeight: FontWeight.w600),
+          ),
+          Text(
+            subtitle,
+            style: TextStyle(fontSize: 12.h, fontWeight: FontWeight.w500),
+          ),
+        ],
+      );
+
+
+
+
+
+      _buildTopWidgetAr() => Container(
+        height: 60.h,
+        width: 343.w,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, rgba[0], rgba[1], rgba[2]),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppIcons.airconditioning,
+                        height: 22.h,
+                        width: 30.w,
+                      ),
+                      CustomSpacers.width14,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.data.CategoryNameEn,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.secondary),
+                          ),
+                          Text(
+                            widget.data.SubCategoryNameEn,
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.secondary),
+                          )
+                        ],
+                      ),
+                    ]),
+              ),
+              Icon(
+                Icons.more_vert,
+                color: AppColors.secondary,
+              )
+            ],
+          ),
+        ),
+      );
+
+  _buildbottomWidgetAr() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 13),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildWidget("Order", widget.data.ticketNo),
+                _buildWidget("Date", date),
+                _buildWidget("Time", time),
+              ],
+            ),
+            CustomSpacers.height16,
+            Divider(
+              thickness: 2,
+            ),
+            CustomSpacers.height16,
+            _buildRowWidget("Name", ":  ${widget.data.Fullname}" ),
+            CustomSpacers.height8,
+              _buildRowWidget("Mobile Number", ":  ${widget.data.PhoneNo}"),
+            CustomSpacers.height8,
+            _buildRowWidget("Address", ":  Contonment trichy - 6200001"),
+
+
+            CustomSpacers.height16,
+
+            AcceptRejectWidget(id : widget.data.ticketId)
+          ],
+        ),
+      );
+}
