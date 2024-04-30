@@ -5,9 +5,13 @@ import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
 import 'package:pick_a_service/features/service%20history/models/completed_task.dart';
+// ignore: unused_import
 import 'package:pick_a_service/features/service%20history/screens/pending_orders_details_completed.dart';
+import 'package:pick_a_service/features/service%20history/screens/pending_orders_details_screen.dart';
 import 'package:pick_a_service/main.dart';
+import 'package:pick_a_service/ui/molecules/custom_drop_down.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompletedScreen extends StatefulWidget {
   String title;
@@ -19,7 +23,9 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
+  String status = "Completed";
   int _selectedIndex = -1;
+  Set<String> item = { "Completed", "Paid", "Observation"};
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ScheduleHistoryProvider>(context);
@@ -27,38 +33,61 @@ class _CompletedScreenState extends State<CompletedScreen> {
       color: Colors.blue,
       onRefresh: () async {
         await provider.getUpcomingTicketsData(context);
-        await provider.completeTask();
+        await provider.completeTask(status);
       },
-      child: !provider.isUpcomingLoading
-          ? !provider.completeTaskList.isEmpty
-              ? ListView.builder(
-                  itemCount: widget.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = index;
-                        });
-                        _navigate(context, index);
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: CustomDropdown(
+                items: item,
+                 
+                hintText: "Completed",
+                validator: (v) {},
+                onChanged: (v) {
+                  setState(() {
+                    status = v!;
+                  });
+                  provider.completeTask(v!);
+                }),
+          ),
+
+          CustomSpacers.height10,
+          !provider.isUpcomingLoading
+              ? !provider.completeTaskList.isEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = index;
+                            });
+                            _navigate(context, index);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: _selectedIndex == index
+                                  ? Colors.grey.withOpacity(
+                                      0.5) // Change to the desired color
+                                  : Colors.transparent,
+                            ),
+                            child: ScheduleHistoryScreenWidgetCompleted(
+                              data: widget.data[index],
+                            ),
+                          ),
+                        );
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == index
-                              ? Colors.grey.withOpacity(
-                                  0.5) // Change to the desired color
-                              : Colors.transparent,
-                        ),
-                        child: ScheduleHistoryScreenWidgetCompleted(
-                          data: widget.data[index],
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : Center(child: Text("You dont have any ${widget.title} data !"))
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+                    )
+                  : Center(child: Text(AppLocalizations.of(context)!.noodata))
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ],
+      ),
     );
   }
 
@@ -72,9 +101,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
         pageBuilder: (context, animation, secondaryAnimation) {
           return FadeTransition(
             opacity: animation,
-            child: PendingOrdersDetailsCompletedScreen(
+            child: PendingOrdersDetailsScreen(
               arguments: {"day": widget.title, "ind": index},
-              data: widget.data[index],
+              ticketId: widget.data[index].ticketId,
             ), // Replace with your notification screen
           );
         },
@@ -233,14 +262,17 @@ class _ScheduleHistoryScreenWidgetCompletedState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo, AppColors.primary),
-            _buildWidget("Date", widget.data.date, AppColors.primary),
-            _buildWidget("Time", widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders,
+                widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date,
+                AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time,
+                AppColors.primary),
             widget.data.WorkStatus == "Observation"
-                ? _buildWidget("Status", widget.data.WorkStatus,
-                    Color.fromARGB(255, 255, 81, 0))
-                : _buildWidget("Status", widget.data.WorkStatus,
-                    Color.fromARGB(255, 170, 0, 255)),
+                ? _buildWidget(AppLocalizations.of(context)!.status,
+                    widget.data.WorkStatus, Color.fromARGB(255, 255, 81, 0))
+                : _buildWidget(AppLocalizations.of(context)!.status,
+                    widget.data.WorkStatus, Color.fromARGB(255, 170, 0, 255)),
           ],
         ),
       );
@@ -293,14 +325,14 @@ class _ScheduleHistoryScreenWidgetCompletedState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.data.CategoryNameEn,
+                            widget.data.CategoryNameAr,
                             style: TextStyle(
                                 fontSize: 12.h,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.secondary),
                           ),
                           Text(
-                            widget.data.SubCategoryNameEn,
+                            widget.data.SubCategoryNameAr,
                             style: TextStyle(
                                 fontSize: 10.h,
                                 fontWeight: FontWeight.w500,
@@ -325,14 +357,17 @@ class _ScheduleHistoryScreenWidgetCompletedState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo, AppColors.primary),
-            _buildWidget("Date", widget.data.date, AppColors.primary),
-            _buildWidget("Time", widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders,
+                widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date,
+                AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time,
+                AppColors.primary),
             widget.data.WorkStatus == "Observation"
-                ? _buildWidget("Status", widget.data.WorkStatus,
-                    Color.fromARGB(255, 255, 81, 0))
-                : _buildWidget("Status", widget.data.WorkStatus,
-                    Color.fromARGB(255, 170, 0, 255)),
+                ? _buildWidget(AppLocalizations.of(context)!.status,
+                    widget.data.WorkStatus, Color.fromARGB(255, 255, 81, 0))
+                : _buildWidget(AppLocalizations.of(context)!.status,
+                    widget.data.WorkStatus, Color.fromARGB(255, 170, 0, 255)),
           ],
         ),
       );

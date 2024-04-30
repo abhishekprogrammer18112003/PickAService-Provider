@@ -14,6 +14,7 @@ import 'package:pick_a_service/features/service%20history/screens/upcoming.dart'
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceHistoryScreen extends StatefulWidget {
   const ServiceHistoryScreen({super.key});
@@ -32,7 +33,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
       await Provider.of<ScheduleHistoryProvider>(context, listen: false)
           .getUpcomingTicketsData(context);
      await Provider.of<ScheduleHistoryProvider>(context, listen: false)
-          .completeTask(); 
+          .completeTask("Completed"); 
     });
   }
 
@@ -69,7 +70,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                         width: 15.w,
                       ),
                       CustomSpacers.width10,
-                      Text("UPCOMING")
+                      Text(AppLocalizations.of(context)!.upcoming)
                     ],
                   ),
                 ),
@@ -83,7 +84,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                         width: 15.w,
                       ),
                       CustomSpacers.width10,
-                      Text("COMPLETED")
+                      Text(AppLocalizations.of(context)!.completed)
                     ],
                   ),
                 )
@@ -138,8 +139,8 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
             return TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                UpcomingScreen(data: value.upcomingTickets  , title: "Upcoming",),
-                CompletedScreen(data: value.completeTaskList , title: "Completed",),
+                UpcomingScreen(data: value.upcomingTickets  , title: AppLocalizations.of(context)!.upcoming,),
+                CompletedScreen(data: value.completeTaskList , title: AppLocalizations.of(context)!.completed,),
               ],
             );
           },

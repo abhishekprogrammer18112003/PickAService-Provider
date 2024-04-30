@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/features/home/data/home_provider.dart';
+import 'package:pick_a_service/features/home/screens/orders_screen.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
 import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'package:pick_a_service/features/service%20history/screens/pending_orders_details_screen.dart';
@@ -10,6 +11,8 @@ import 'package:pick_a_service/features/service%20history/widgets/schedule_histo
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class UpcomingScreen extends StatefulWidget {
   String title;
@@ -29,7 +32,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       color: Colors.blue,
       onRefresh: () async {
         await provider.getUpcomingTicketsData(context);
-        await provider.completeTask();
+        // await provider.completeTask();
       },
       child: !provider.isUpcomingLoading
           ? !provider.upcomingTickets.isEmpty
@@ -73,7 +76,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     );
                   },
                 )
-              : Center(child: Text("You dont have any ${widget.title} data !"))
+              : Center(child: Text(AppLocalizations.of(context)!.noodata))
           : Center(
               child: CircularProgressIndicator(),
             ),
@@ -91,7 +94,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             opacity: animation,
             child: PendingOrdersDetailsScreen(
               arguments: {"day": widget.title, "ind": index},
-              data: widget.data[index],
+              ticketId: widget.data[index].ticketId,
             ), // Replace with your notification screen
           );
         },

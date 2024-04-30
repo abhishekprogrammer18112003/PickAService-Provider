@@ -10,6 +10,7 @@ import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PersonalDataPage extends StatefulWidget {
   const PersonalDataPage({super.key});
@@ -62,7 +63,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             centerTitle: true,
-            title: Text("PERSONAL DATA",
+            title: Text(AppLocalizations.of(context)!.personaldata.toUpperCase(),
                 style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
             leading: GestureDetector(
                 onTap: () => CustomNavigator.pop(context),
@@ -112,7 +113,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           CustomSpacers.height20,
       
                           //=============== NAME =======================
-                          const Text("Name"),
+                           Text(AppLocalizations.of(context)!.name),
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
@@ -157,7 +158,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           CustomSpacers.height30,
       
                           //==================PHONE NUMBER=======================
-                          const Text("Phone Number"),
+                         Text(AppLocalizations.of(context)!.mobile),
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
@@ -207,7 +208,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           CustomSpacers.height30,
       
                           //===================EMAIL -=======================
-                          const Text("Email"),
+                          Text(AppLocalizations.of(context)!.email),
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
@@ -277,7 +278,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
             CustomSpacers.height40,
             Center(
                 child: CustomButton(
-                    strButtonText: "Edit profile",
+                    strButtonText: AppLocalizations.of(context)!.editprofile,
                     buttonAction: () {
                       _navigate(context);
                     },
@@ -293,7 +294,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
             !_isEditProfile
                 ? Center(
                     child: CustomButton(
-                    strButtonText: "Change Password",
+                    strButtonText: AppLocalizations.of(context)!.changepassword,
                     buttonAction: () {
                       CustomNavigator.pushTo(context, AppPages.changePassword).then((v){
                         value.getPersonalData(context);

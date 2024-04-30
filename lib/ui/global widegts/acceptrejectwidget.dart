@@ -7,6 +7,7 @@ import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/home/data/notification_provider.dart';
 import 'package:pick_a_service/ui/global%20widegts/custom_button_accept_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AcceptRejectWidget extends StatefulWidget {
   int id;
@@ -34,7 +35,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
               
               },
               child: CustomAcceptButtonWidget(
-                text: "ACCEPT",
+                text: AppLocalizations.of(context)!.accept,
                 height: 34.h,
                 width: 107.w,
                 radius: 7.r,
@@ -56,7 +57,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
             
               },
               child: CustomAcceptButtonWidget(
-                text: "DECLINE",
+                text: AppLocalizations.of(context)!.decline,
                 height: 34.h,
                 width: 107.w,
                 radius: 7.r,

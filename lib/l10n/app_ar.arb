@@ -1,0 +1,91 @@
+{
+    "email" : "بريد إلكتروني",
+    "password" : "كلمة المرور",
+    "login" : "تسجيل الدخول",
+    "chooseyourlanguage" : "اختر لغتك",
+    "today" : "اليوم",
+    "tomorrow" : "غداً" , 
+    "thisweek" : "هذا الاسبوع",
+    "upcoming"  : "القادمة",
+    "completed" : "مكتمل",
+    "orders" : "طلبات",
+
+
+
+    "date" : "تاريخ" , 
+    "time"  :"وقت",
+    "status" : "حالة",
+    "noodata" : "لايوجد بيانات !",
+
+
+    "notifications" : "إشعارات",
+    "nonewnotificaitons" : "لا يوجد إشعارات جديدة!",
+    "accept" : "يقبل",
+    "decline" : "انخفاض",
+
+
+
+    "ticketdetails"  : "تفاصيل التذكرة", 
+    "customerdetails" : "تفاصيل العميل",
+    "name" : "اسم", 
+    "mobile" : "رقم الهاتف المحمول",
+    "desc" : "وصف",
+    "address" : "عنوان",
+    "getdirection" : "احصل على اتجاه",
+    "cancel" : "يلغي",
+    "start" : "يبدأ",
+    "reached" : "وصل" , 
+    "createchecklist" : "إنشاء قائمة مرجعية",
+    "checklist" : "قائمة تدقيق" , 
+    "chooseitemsfromthefollowing" : "اختر عناصر من قوائم المراجعة التالية -",
+    "tons" : "طن" ,
+    "model" : "نموذج",
+    "noimageselected" : "لم يتم تحديد صورة.",
+    "takephoto" : "تصوير",
+    "uploadfromgallery" : "تحميل من المعرض",
+    "savechecklist" : "حفظ قائمة المراجعة" , 
+    "createinvoice" : "إنشاء فاتورة", 
+    "viewchecklist" : "عرض قائمة التحقق",
+    "selectedton"  : "طن مختارة", 
+    "selectedmodel" : "النموذج المحدد",
+    "waitfortheimagetoload" : "انتظر حتى يتم تحميل الصورة....",
+    "search" : "يبحث....." , 
+    "invoice" : "فاتورة",
+    "price" : "سعر" , 
+    "generateinvoice" : "إنشاء الفاتورة" , 
+    "viewinvoice" :  "عرض الفاتورة",
+    "observation" : "ملاحظة",
+    "mandatory" : "إلزامي",
+    "noordersfor" : "لا توجد أوامر ل",
+
+
+    "modeofpayment" :  "طريقة الدفع", 
+    "invoiceno" : "رقم الفاتورة.",
+    "invoiceamount" : "قيمة الفاتورة", 
+    "enterinvoicenno" : "أدخل رقم الفاتورة",
+    "enteramount" : "أدخل المبلغ",
+    "save" : "يحفظ",
+    "cash" :  "نقدي" , 
+    "card" : "بطاقة" ,
+
+
+
+    "welcome" : "مرحباً", 
+    "personaldata" : "بيانات شخصية",
+    "deleteaccount" : "حذف الحساب",
+    "language" : "لغة",
+    "contactus" : "اتصل بنا",
+    "about" : "حول اختيار الخدمة",
+    "logout" : "تسجيل خروج",
+
+
+
+
+    "changepassword"  : "تغيير كلمة المرور",
+    "editprofile"  : "تعديل الملف الشخصي" , 
+    "newpassword" : "كلمة المرور الجديدة",
+    "reenternewpassword" :  "أعد إدخال كلمة المرور الجديدة" ,
+    "savechanges" : "حفظ التغييرات",
+    "editprofile" :  "تعديل الملف الشخصي", 
+    "enterotp" : "أدخل كلمة المرور لمرة واحدة"
+}

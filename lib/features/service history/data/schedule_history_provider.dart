@@ -164,7 +164,7 @@ class ScheduleHistoryProvider with ChangeNotifier {
 
   List<CompletedTasksModel> _completeTaskList = [];
   List<CompletedTasksModel> get completeTaskList => _completeTaskList;
-  Future<void> completeTask() async {
+  Future<void> completeTask(String status) async {
     int techId = await SharedPreferencesManager.getInt("user_id");
     _isUpcomingLoading = true;
 
@@ -175,6 +175,7 @@ class ScheduleHistoryProvider with ChangeNotifier {
       var headers = {'Content-Type': 'application/json' , 'token' : jwt_token};
       Map<String, dynamic> body = {
         "technicianId": techId,
+        "workStatus": status,
       };
       http.Response response = await http.post(Uri.parse(COMPLETED),
           headers: headers, body: jsonEncode(body));
@@ -211,4 +212,60 @@ class ScheduleHistoryProvider with ChangeNotifier {
       throw e;
     }
   }
+
+
+
+
+
+  // =============fiilter completed task ================
+
+
+  // Future<void> filetrCompleteTask(String status) async {
+  //   int techId = await SharedPreferencesManager.getInt("user_id");
+  //   _isUpcomingLoading = true;
+
+  //   notifyListeners();
+  //   String jwt_token = SharedPreferencesManager.getString("jwt_token");
+
+  //   try {
+  //     var headers = {'Content-Type': 'application/json' , 'token' : jwt_token};
+  //     Map<String, dynamic> body = {
+  //       "technicianId": techId,
+  //       "workStatus": status,
+  //     };
+  //     http.Response response = await http.post(Uri.parse(FILTERCOMPLETEDTASK),
+  //         headers: headers, body: jsonEncode(body));
+
+  //     print(response);
+  //     var data = jsonDecode(response.body);
+  //     print(data);
+  //     List<CompletedTasksModel> list = [];
+  //     if (response.statusCode == 200) {
+  //       for (var i in data["result"]) {
+  //         CompletedTasksModel _model = CompletedTasksModel.fromJson(i);
+  //         list.add(_model);
+  //       }
+  //       _completeTaskList = list;
+  //       _isUpcomingLoading = false;
+
+  //       notifyListeners();
+  //     } else {
+  //       _completeTaskList = [];
+  //       _isUpcomingLoading = false;
+  //       notifyListeners();
+  //       // OverlayManager.showToast(
+  //       // type: ToastType.Error, msg: "Something went wrong !");
+
+  //       // throw data["message"];
+  //     }
+  //   } catch (e) {
+  //     _completeTaskList = [];
+
+  //     _isUpcomingLoading = false;
+  //     notifyListeners();
+  //     // OverlayManager.showToast(
+  //     // type: ToastType.Error, msg: "Something went wrong !");
+  //     throw e;
+  //   }
+  // }
 }

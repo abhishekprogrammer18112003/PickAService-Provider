@@ -12,6 +12,8 @@ import 'package:pick_a_service/notification_service.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,9 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   unselectedLabelColor:
                       const Color.fromARGB(255, 185, 185, 185),
                   tabs: [
-                    Tab(text: 'TODAY'),
-                    Tab(text: 'TOMORROW'),
-                    Tab(text: 'THIS WEEK'),
+                    Tab(text: AppLocalizations.of(context)!.today),
+                    Tab(text: AppLocalizations.of(context)!.tomorrow),
+                    Tab(text: AppLocalizations.of(context)!.thisweek),
                   ],
                 ),
                 flexibleSpace: Padding(
@@ -112,15 +114,15 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 DateScreen(
                   data: value.acceptedTodayOrdersList,
-                  title: "Today",
+                  title: AppLocalizations.of(context)!.today.toLowerCase(),
                 ),
                 DateScreen(
                   data: value.acceptedTomorrowOrdersList,
-                  title: "Tomorrow",
+                  title: AppLocalizations.of(context)!.tomorrow.toLowerCase(),
                 ),
                 DateScreen(
                   data: value.acceptedThisWeekOrdersList,
-                  title: "This Week",
+                  title: AppLocalizations.of(context)!.thisweek.toLowerCase(),
                 ),
               ],
             );

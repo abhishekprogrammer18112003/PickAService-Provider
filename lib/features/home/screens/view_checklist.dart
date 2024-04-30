@@ -15,12 +15,14 @@ import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/features/home/widgets/tons_dropdown.dart';
 import 'package:pick_a_service/features/home/widgets/tons_model_dropdown.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:pick_a_service/ui/molecules/custom_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewCheckListScreen extends StatefulWidget {
-  AcceptedOrdersModel arguments;
+  TicketDetailsModel arguments;
   ViewCheckListScreen({super.key, required this.arguments});
 
   @override
@@ -62,7 +64,7 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
         // backgroundColor: Color.fromARGB(255, 126, 217, 245),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text("Checklist",
+        title: Text(AppLocalizations.of(context)!.checklist,
             style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
         leading: GestureDetector(
             onTap: () => CustomNavigator.pop(context),
@@ -106,7 +108,7 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
                                 } else {
                                   return Center(
                                     child: Text(
-                                      "Wait for the image to load...",
+                                      AppLocalizations.of(context)!.waitfortheimagetoload,
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ); // Show message while image is loading
@@ -188,7 +190,7 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
             //       });
             //     }),
 
-            Text("Selected Ton",
+            Text(AppLocalizations.of(context)!.selectedton,
                 style: TextStyle(
                     fontSize: 18.h,
                     fontWeight: FontWeight.w400,
@@ -212,7 +214,7 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
             ),
             CustomSpacers.height40,
 
-            Text("Selected Model",
+            Text(AppLocalizations.of(context)!.selectedmodel,
                 style: TextStyle(
                     fontSize: 18.h,
                     fontWeight: FontWeight.w400,

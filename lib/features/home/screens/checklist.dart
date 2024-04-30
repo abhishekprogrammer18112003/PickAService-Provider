@@ -12,11 +12,13 @@ import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/features/home/widgets/tons_dropdown.dart';
 import 'package:pick_a_service/features/home/widgets/tons_model_dropdown.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckListScreen extends StatefulWidget {
-  AcceptedOrdersModel arguments;
+  TicketDetailsModel arguments;
   CheckListScreen({super.key, required this.arguments});
 
   @override
@@ -33,7 +35,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<HomeProvider>(context, listen: false)
-          .getTons(widget.arguments.categoryId, widget.arguments.subcategoryId);
+          .getTons(widget.arguments.CategoryId, widget.arguments.SubCategoryId);
     });
   }
 
@@ -64,7 +66,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
         // backgroundColor: Color.fromARGB(255, 126, 217, 245),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text("Checklist",
+        title: Text(AppLocalizations.of(context)!.checklist,
             style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
         leading: GestureDetector(
             onTap: () => CustomNavigator.pop(context),
@@ -99,7 +101,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _image == null
-                          ? Text('No image selected.')
+                          ? Text(AppLocalizations.of(context)!.noimageselected)
                           : Image.file(
                               File(_image!.path),
                               height: 200,
@@ -107,12 +109,12 @@ class _CheckListScreenState extends State<CheckListScreen> {
                       SizedBox(height: 10.h),
                       ElevatedButton(
                         onPressed: getImagefromCamera,
-                        child: Text('Take Photo'),
+                        child: Text(AppLocalizations.of(context)!.takephoto),
                       ),
                       SizedBox(height: 10.h),
                       ElevatedButton(
                         onPressed: getImageFromGallery,
-                        child: Text('Upload from Gallery'),
+                        child: Text(AppLocalizations.of(context)!.chooseyourlanguage),
                       ),
                     ],
                   ),
@@ -125,17 +127,16 @@ class _CheckListScreenState extends State<CheckListScreen> {
                     child: subCatCat != 0 && modelID != 0 && _image != null
                         ? !value.isSaving
                             ? CustomButton(
-                                strButtonText: "Save Checklist",
+                                strButtonText: AppLocalizations.of(context)!.savechecklist,
                                 buttonAction: () {
                                   print(_image!.path);
                                   // CustomNavigator.pop(context);
                                   value.createChecklist(
                                       widget.arguments.ticketId,
-                                      widget.arguments.customerId,
+                                      widget.arguments.customerid,
                                       subCatCat,
                                       modelID,
-                                      context,
-                                      widget.arguments , _image!.path);
+                                      context, _image!.path);
 
                                   // notificationProvider.Checklist(true);
                                   // print(notificationProvider.isChecklist);
@@ -167,13 +168,13 @@ class _CheckListScreenState extends State<CheckListScreen> {
             child: Column(
               children: [
                 Text(
-                  "Choose the items from the following Checklists- ",
+                  AppLocalizations.of(context)!.chooseitemsfromthefollowing,
                   style: TextStyle(fontSize: 15.h, fontWeight: FontWeight.w500),
                 ),
                 CustomSpacers.height30,
                 TonsDropdown(
                     items: value.getTonsList,
-                    hintText: "Tons",
+                    hintText: AppLocalizations.of(context)!.tons,
                     validator: (v) {},
                     onChanged: (v) {
                       print(v);
@@ -187,7 +188,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
                 _isModel
                     ? TonsModelDropdown(
                         items: value.getModelList,
-                        hintText: "Model",
+                        hintText: AppLocalizations.of(context)!.model,
                         validator: (v) {},
                         onChanged: (v) {
                           setState(() {

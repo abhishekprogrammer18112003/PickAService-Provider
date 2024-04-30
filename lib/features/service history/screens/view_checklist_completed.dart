@@ -12,6 +12,7 @@ import 'package:pick_a_service/features/home/data/home_provider.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/models/get_checklist_model.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
+import 'package:pick_a_service/features/home/widgets/orders_widget_main.dart';
 import 'package:pick_a_service/features/home/widgets/tons_dropdown.dart';
 import 'package:pick_a_service/features/home/widgets/tons_model_dropdown.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
@@ -88,7 +89,7 @@ class _ViewCheckListScreenCompletedState extends State<ViewCheckListScreenComple
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // CustomSpacers.height80,
-                      OrdersWidget(data: widget.arguments),
+                      OrdersWidgetMain(data: widget.arguments),
 
                       // CustomSpacers.height10,
                       _buildBottom(value.getChecklistModel[0]),

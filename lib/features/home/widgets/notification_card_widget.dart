@@ -8,12 +8,13 @@ import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/home/models/notification_model.dart';
 import 'package:pick_a_service/main.dart';
 import 'package:pick_a_service/ui/global%20widegts/acceptrejectwidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/constants/app_colors.dart';
 
 class NotificationCardWidget extends StatefulWidget {
   NotificationModel data;
-  NotificationCardWidget({super.key , required this.data});
+  NotificationCardWidget({super.key, required this.data});
 
   @override
   State<NotificationCardWidget> createState() => _NotificationCardWidgetState();
@@ -22,68 +23,68 @@ class NotificationCardWidget extends StatefulWidget {
 class _NotificationCardWidgetState extends State<NotificationCardWidget> {
   List<int> rgba = [];
   String date = "";
-  String time =  "";
+  String time = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-     rgba = AppData.hexToRgba(widget.data.color);
-  
-
+    rgba = AppData.hexToRgba(widget.data.color);
   }
 
   @override
   Widget build(BuildContext context) {
-    return lang == "en" ? Padding(
-      padding: const EdgeInsets.symmetric(horizontal :16.0),
-      child: Container(
-        width: 343.w,
-        height: 283.h,
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 218, 218, 218),
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: Offset(0, 5), // changes position of shadow
+    return lang == "en"
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              width: 343.w,
+              height: 283.h,
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 218, 218, 218),
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                    offset: Offset(0, 5), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  _buildTopWidgetEn(),
+                  _buildbottomWidgetEn(),
+                ],
+              ),
             ),
-          ],
-        ),
-        child: Column(
-          children: [
-            _buildTopWidgetEn(),
-            _buildbottomWidgetEn(),
-          ],
-        ),
-      ),
-    ) : Padding(
-      padding: const EdgeInsets.symmetric(horizontal :16.0),
-      child: Container(
-        width: 343.w,
-        height: 283.h,
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 218, 218, 218),
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: Offset(0, 5), // changes position of shadow
+          )
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              width: 343.w,
+              height: 283.h,
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 218, 218, 218),
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                    offset: Offset(0, 5), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  _buildTopWidgetAr(),
+                  _buildbottomWidgetAr(),
+                ],
+              ),
             ),
-          ],
-        ),
-        child: Column(
-          children: [
-            _buildTopWidgetAr(),
-            _buildbottomWidgetAr(),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   _buildTopWidgetEn() => Container(
@@ -133,10 +134,10 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
                       ),
                     ]),
               ),
-              Icon(
-                Icons.more_vert,
-                color: AppColors.secondary,
-              )
+              // Icon(
+              //   Icons.more_vert,
+              //   color: AppColors.secondary,
+              // )
             ],
           ),
         ),
@@ -150,9 +151,12 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildWidget("Order", widget.data.ticketNo),
-                _buildWidget("Date", widget.data.date),
-                _buildWidget("Time", widget.data.time),
+                _buildWidget(
+                    AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+                _buildWidget(
+                    AppLocalizations.of(context)!.date, widget.data.date),
+                _buildWidget(
+                    AppLocalizations.of(context)!.time, widget.data.time),
               ],
             ),
             CustomSpacers.height16,
@@ -160,16 +164,16 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               thickness: 2,
             ),
             CustomSpacers.height16,
-            _buildRowWidget("Name", ":  ${widget.data.Fullname}" ),
+            _buildRowWidget(AppLocalizations.of(context)!.name,
+                ":  ${widget.data.Fullname}"),
             CustomSpacers.height8,
-              _buildRowWidget("Mobile Number", ":  ${widget.data.PhoneNo}"),
+            _buildRowWidget(AppLocalizations.of(context)!.mobile,
+                ":  ${widget.data.PhoneNo}"),
             CustomSpacers.height8,
-            _buildRowWidget("Address", ":  Contonment trichy - 6200001"),
-
-
+            _buildRowWidget(AppLocalizations.of(context)!.address,
+                ":  ${widget.data.NameOfAddress}"),
             CustomSpacers.height16,
-
-            AcceptRejectWidget(id : widget.data.ticketId)
+            AcceptRejectWidget(id: widget.data.ticketId)
           ],
         ),
       );
@@ -211,11 +215,7 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
         ],
       );
 
-
-
-
-
-      _buildTopWidgetAr() => Container(
+  _buildTopWidgetAr() => Container(
         height: 60.h,
         width: 343.w,
         decoration: BoxDecoration(
@@ -262,10 +262,10 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
                       ),
                     ]),
               ),
-              Icon(
-                Icons.more_vert,
-                color: AppColors.secondary,
-              )
+              // Icon(
+              //   Icons.more_vert,
+              //   color: AppColors.secondary,
+              // )
             ],
           ),
         ),
@@ -279,9 +279,12 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildWidget("Order", widget.data.ticketNo),
-                _buildWidget("Date", date),
-                _buildWidget("Time", time),
+                _buildWidget(
+                    AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+                _buildWidget(
+                    AppLocalizations.of(context)!.date, widget.data.date),
+                _buildWidget(
+                    AppLocalizations.of(context)!.time, widget.data.time),
               ],
             ),
             CustomSpacers.height16,
@@ -289,16 +292,16 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               thickness: 2,
             ),
             CustomSpacers.height16,
-            _buildRowWidget("Name", ":  ${widget.data.Fullname}" ),
+            _buildRowWidget(AppLocalizations.of(context)!.name,
+                ":  ${widget.data.Fullname}"),
             CustomSpacers.height8,
-              _buildRowWidget("Mobile Number", ":  ${widget.data.PhoneNo}"),
+            _buildRowWidget(AppLocalizations.of(context)!.mobile,
+                ":  ${widget.data.PhoneNo}"),
             CustomSpacers.height8,
-            _buildRowWidget("Address", ":  Contonment trichy - 6200001"),
-
-
+            _buildRowWidget(AppLocalizations.of(context)!.address,
+                ":  ${widget.data.NameOfAddress}"),
             CustomSpacers.height16,
-
-            AcceptRejectWidget(id : widget.data.ticketId)
+            AcceptRejectWidget(id: widget.data.ticketId)
           ],
         ),
       );

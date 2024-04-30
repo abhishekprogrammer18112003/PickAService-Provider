@@ -44,7 +44,7 @@ class AppData {
 
 
 
-  static Set<String> items = {"cash", "card"};
+  
 
   static List<Map<String, dynamic>> InvoicePrice = [{"title" : "Intem1", "price" : "price1"}  , {"title" : "Intem1", "price" : "price1"}, {"title" : "Intem1", "price" : "price1"}, {"title" : "Intem1", "price" : "price1"}];
 }

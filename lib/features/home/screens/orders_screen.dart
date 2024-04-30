@@ -13,65 +13,76 @@ import 'package:pick_a_service/features/home/data/notification_provider.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/widgets/accept_decline_orders.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
+import 'package:pick_a_service/features/ticket_details_provider.dart';
 import 'package:pick_a_service/location_service.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 import 'package:pick_a_service/ui/global%20widegts/custom_button_accept_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrdersScreen extends StatefulWidget {
   Map<String, dynamic> arguments;
-  AcceptedOrdersModel data;
-  OrdersScreen({super.key, required this.arguments, required this.data});
+  // AcceptedOrdersModel data;
+  int ticketId;
+  OrdersScreen({super.key, required this.ticketId, required this.arguments});
 
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  AcceptedOrdersModel? data;
+  TicketDetailsModel? data;
 
   String? status;
   @override
   void initState() {
     super.initState();
-
-    data = widget.data;
-    updateStatus(data);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<TicketDetailsProvider>(context, listen: false)
+          .getTicketData(context, widget.ticketId);
+      final provider =
+          Provider.of<TicketDetailsProvider>(context, listen: false);
+      data = provider.TicketDetails[0];
+       updateStatus(data);
+    });
+   
   }
 
-  void updateStatus(AcceptedOrdersModel? d) {
+  void updateStatus(TicketDetailsModel? d) {
     // print(d!.WorkStatus);
     // status = d!.WorkStatus;
     if (d!.WorkStatus == "Accepted") {
-      status = "START";
+      status = AppLocalizations.of(context)!.start;
     }
 
     if (d.WorkStatus == "Started") {
-      status = "REACHED";
+      status = AppLocalizations.of(context)!.reached;
     }
     if (d.WorkStatus == "Reached") {
-      status = "CREATE CHECKLIST";
+      status =AppLocalizations.of(context)!.createchecklist ;
     }
 
     if (d.WorkStatus == "Checklist Created") {
-      status = "VIEW CHECKLIST";
+      status = AppLocalizations.of(context)!.viewchecklist;
     }
     if (d.WorkStatus == "Invoice Created") {
       status = "PAID";
     }
     if (d.WorkStatus == "Observation") {
-      status = "COMPLETED";
+      status = AppLocalizations.of(context)!.completed;
     }
     if (d.WorkStatus == "Completed") {
       status = "DONE";
     }
 
     if (d.WorkStatus == "Paid") {
-      status = "OBSERVATION";
+      status = AppLocalizations.of(context)!.observation;
     }
     setState(() {
+      print("=======status======");
       print(status);
     });
   }
@@ -88,13 +99,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final notificationProvider = Provider.of<NotificationProvider>(context);
-    final homeProvider = Provider.of<HomeProvider>(context);
+    final provider = Provider.of<TicketDetailsProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text("Ticket Details",
+        title: Text(AppLocalizations.of(context)!.ticketdetails,
             style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
         leading: GestureDetector(
             onTap: () => CustomNavigator.pop(context),
@@ -113,32 +124,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await homeProvider.getacceptedOrders();
-
-          if (widget.arguments["day"] == "This Week") {
-            setState(() {
-              data = homeProvider
-                  .acceptedThisWeekOrdersList[widget.arguments["ind"]];
-            });
-          } else if (widget.arguments["day"] == "Tomorrow") {
-            setState(() {
-              data = homeProvider
-                  .acceptedTomorrowOrdersList[widget.arguments["ind"]];
-            });
-          } else {
-            setState(() {
-              data =
-                  homeProvider.acceptedTodayOrdersList[widget.arguments["ind"]];
-            });
-          }
+          await provider.getTicketData(context, widget.ticketId);
+          data = provider.TicketDetails[0];
 
           setState(() {
             updateStatus(data);
           });
         },
-        child: Consumer<HomeProvider>(
+        child: Consumer<TicketDetailsProvider>(
           builder: (context, value, child) {
-            return !value.isOrdersLoading
+            return !value.isNotificationLoading
                 ? SingleChildScrollView(
                     child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -160,17 +155,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   _buildWidget() => Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Customer Details",
-                style: TextStyle(
-                  fontSize: 20.w,
-                  fontWeight: FontWeight.w600,
-                ),
+            child: Text(
+              AppLocalizations.of(context)!.customerdetails,
+              style: TextStyle(
+                fontSize: 20.w,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -184,7 +178,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 44.w),
             // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
-            child: widget.arguments["day"] == "Today"
+            child: widget.arguments["day"] == AppLocalizations.of(context)!.today.toLowerCase()
                 ? _buildButtons()
                 : Container(),
           ),
@@ -213,7 +207,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Name",
+                Text(AppLocalizations.of(context)!.name,
                     style: TextStyle(
                       fontSize: 12.w,
                       fontWeight: FontWeight.w600,
@@ -239,22 +233,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          data!.Fullname,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey),
-                        )),
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 15.h),
+                    child: Text(
+                      data!.customerName,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey),
+                    ),
                   ),
                 ),
 
                 CustomSpacers.height12,
 
-                Text("Mobile Number",
+                Text(AppLocalizations.of(context)!.mobile,
                     style: TextStyle(
                       fontSize: 12.w,
                       fontWeight: FontWeight.w600,
@@ -262,18 +254,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 CustomSpacers.height8,
 
                 GestureDetector(
-                  onTap: () async{
-                    final Uri url = Uri(scheme: 'tel' , path: data!.PhoneNo);
-                      if(await canLaunchUrl(url)){
-                        await launchUrl(url);
-                      } 
+                  onTap: () async {
+                    final Uri url =
+                        Uri(scheme: 'tel', path: data!.customerPhone);
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                  height: 50.h,
-
+                        height: 50.h,
                         width: 295.w,
                         decoration: BoxDecoration(
                           color: AppColors.secondary,
@@ -284,7 +276,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   .withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 1,
-                              offset: Offset(0, 2), // changes position of shadow
+                              offset:
+                                  Offset(0, 2), // changes position of shadow
                             ),
                           ],
                         ),
@@ -297,7 +290,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    data!.PhoneNo,
+                                    data!.customerPhone,
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
@@ -359,14 +352,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Description",
+                  Text(AppLocalizations.of(context)!.desc,
                       style: TextStyle(
                         fontSize: 12.w,
                         fontWeight: FontWeight.w600,
                       )),
                   CustomSpacers.height10,
                   Container(
-                    height: 80.h,
+                    // height: 80.h,
                     width: 295.w,
                     decoration: BoxDecoration(
                       color: AppColors.secondary,
@@ -382,17 +375,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            data!.Descriptions,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey),
-                          )),
+                      padding:  EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 9.h),
+                      child: Text(
+                        data!.Descriptions,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
+                      ),
                     ),
                   ),
                   CustomSpacers.height12
@@ -423,14 +414,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Address",
+                Text(AppLocalizations.of(context)!.address,
                     style: TextStyle(
                       fontSize: 12.w,
                       fontWeight: FontWeight.w600,
                     )),
                 CustomSpacers.height10,
                 Container(
-                  height: 60.h,
+                  // height: 60.h,
                   width: 295.w,
                   decoration: BoxDecoration(
                     color: AppColors.secondary,
@@ -446,17 +437,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          data!.NameOfAddress,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey),
-                        )),
+                    padding:  EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 9.h),
+                    child: Text(
+                      data!.NameOfAddress,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey),
+                    ),
                   ),
                 ),
                 CustomSpacers.height16,
@@ -477,7 +466,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             fontSize: 10.w,
                             fontWeight: FontWeight.w700,
                             color: AppColors.secondary),
-                        text: "Get Direction"),
+                        text: AppLocalizations.of(context)!.getdirection),
                   ),
                 ),
                 CustomSpacers.height12
@@ -489,56 +478,58 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   _buildButtons() {
     final notificationProvider = Provider.of<NotificationProvider>(context);
-    final homeProvider = Provider.of<HomeProvider>(context);
+    final provider = Provider.of<TicketDetailsProvider>(context, listen: false);
 
     return !notificationProvider.isLoading
         ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.h),
             child: Column(
               children: [
-                status == "OBSERVATION" ||
+                status == AppLocalizations.of(context)!.observation ||
                         status == "DONE" ||
-                        status == "COMPLETED" ||
-                        status == "PAID" 
+                        status == AppLocalizations.of(context)!.completed ||
+                        status == "PAID"
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
                             onTap: () {
                               CustomNavigator.pushTo(
-                                  context, AppPages.viewChecklist,
-                                  arguments: data).then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                      context, AppPages.viewChecklist,
+                                      arguments: data)
+                                  .then((v) async {
+                                await provider.getTicketData(
+                                    context, widget.ticketId);
+                                data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
-                                    setState(() {
-                                      print("updating status ");
-                                      updateStatus(data);
-                                    });
-                                  });;
+                                // if (widget.arguments["day"] == "This Week") {
+                                //   setState(() {
+                                //     data =
+                                //         homeProvider.acceptedThisWeekOrdersList[
+                                //             widget.arguments["ind"]];
+                                //   });
+                                // } else if (widget.arguments["day"] ==
+                                //     "Tomorrow") {
+                                //   setState(() {
+                                //     data =
+                                //         homeProvider.acceptedTomorrowOrdersList[
+                                //             widget.arguments["ind"]];
+                                //   });
+                                // } else {
+                                //   setState(() {
+                                //     data = homeProvider.acceptedTodayOrdersList[
+                                //         widget.arguments["ind"]];
+                                //   });
+                                // }
+                                setState(() {
+                                  print("updating status ");
+                                  updateStatus(data);
+                                });
+                              });
+                              ;
                             },
                             child: CustomAcceptButtonWidget(
-                              text: "VIEW CHECKLIST",
+                              text: AppLocalizations.of(context)!.viewchecklist,
                               height: 34.h,
                               width: 120.w,
                               radius: 7.r,
@@ -553,39 +544,41 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           GestureDetector(
                             onTap: () {
                               CustomNavigator.pushTo(
-                                  context, AppPages.viewInvoice,
-                                  arguments: data).then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                      context, AppPages.viewInvoice,
+                                      arguments: data)
+                                  .then((v) async {
+                                await provider.getTicketData(
+                                    context, widget.ticketId);
+                                data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
-                                    setState(() {
-                                      print("updating status ");
-                                      updateStatus(data);
-                                    });
-                                  });;
+                                // if (widget.arguments["day"] == "This Week") {
+                                //   setState(() {
+                                //     data =
+                                //         homeProvider.acceptedThisWeekOrdersList[
+                                //             widget.arguments["ind"]];
+                                //   });
+                                // } else if (widget.arguments["day"] ==
+                                //     "Tomorrow") {
+                                //   setState(() {
+                                //     data =
+                                //         homeProvider.acceptedTomorrowOrdersList[
+                                //             widget.arguments["ind"]];
+                                //   });
+                                // } else {
+                                //   setState(() {
+                                //     data = homeProvider.acceptedTodayOrdersList[
+                                //         widget.arguments["ind"]];
+                                //   });
+                                // }
+                                setState(() {
+                                  print("updating status ");
+                                  updateStatus(data);
+                                });
+                              });
+                              ;
                             },
-                            child:  CustomAcceptButtonWidget(
-                              text: "VIEW INVOICE",
+                            child: CustomAcceptButtonWidget(
+                              text: AppLocalizations.of(context)!.viewinvoice,
                               height: 34.h,
                               width: 120.w,
                               radius: 7.r,
@@ -601,11 +594,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       )
                     : Container(),
                 CustomSpacers.height16,
-                status == "COMPLETED" ||
-                        status == "OBSERVATION" || status == "START" || status == "REACHED" 
-
-                        || status == "CREATE CHECKLIST" || status == "VIEW CHECKLIST" || status == "COMPLETED"
-                       
+                
+                        status == AppLocalizations.of(context)!.observation ||
+                        status == AppLocalizations.of(context)!.start ||
+                        status == AppLocalizations.of(context)!.reached ||
+                        status == AppLocalizations.of(context)!.createchecklist ||
+                        status == AppLocalizations.of(context)!.viewchecklist ||
+                        status == AppLocalizations.of(context)!.completed
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -613,145 +608,152 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           GestureDetector(
                               onTap: () async {
                                 print(status);
-                                if (status == "START") {
+                                if (status == AppLocalizations.of(context)!.start) {
                                   locationService.startLocationService(false);
                                   notificationProvider.acceptOrder(
-                                      widget.data.ticketId, "Start");
+                                      data!.ticketId, "Start");
 
                                   setState(() {
-                                    status = "REACHED";
+                                    status = AppLocalizations.of(context)!.reached;
                                   });
-                                } else if (status == "REACHED") {
+                                } else if (status == AppLocalizations.of(context)!.reached) {
                                   locationService.startLocationService(true);
                                   notificationProvider.acceptOrder(
-                                      widget.data.ticketId, "Reached");
+                                      data!.ticketId, "Reached");
                                   setState(() {
-                                    status = "CREATE CHECKLIST";
+                                    status = AppLocalizations.of(context)!.createchecklist;
                                   });
-                                } else if (status == "CREATE CHECKLIST") {
+                                } else if (status == AppLocalizations.of(context)!.createchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.checklist,
                                           arguments: data)
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       print("updating status ");
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == "VIEW CHECKLIST") {
+                                } else if (status == AppLocalizations.of(context)!.viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.viewChecklist,
                                           arguments: data)
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == "OBSERVATION") {
+                                } else if (status == AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
                                       .acceptOrder(
                                           data!.ticketId, "Observation")
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
-
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == "COMPLETED") {
+                                } else if (status ==AppLocalizations.of(context)!.completed) {
                                   await notificationProvider
                                       .acceptOrder(data!.ticketId, "Completed")
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       updateStatus(data);
                                     });
@@ -761,10 +763,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               child: CustomAcceptButtonWidget(
                                 text: status!,
                                 height: 34.h,
-                                width: status == "START"
+                                width: status == AppLocalizations.of(context)!.start
                                     ? 107.w
-                                    : status == "VIEW CHECKLIST" ||
-                                            status == "OBSERVATION"
+                                    : status == AppLocalizations.of(context)!.viewchecklist||
+                                            status == AppLocalizations.of(context)!.observation
                                         ? 127.w
                                         : 247.w,
                                 radius: 7.r,
@@ -777,87 +779,84 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               )),
                           GestureDetector(
                               onTap: () async {
-                                if (status == "START") {
+                                if (status == AppLocalizations.of(context)!.start) {
                                   await notificationProvider
-                                      .declineOrder(widget.data.ticketId);
+                                      .declineOrder(data!.ticketId);
                                   Navigator.pop(context);
                                 }
 
-                                if (status == "VIEW CHECKLIST") {
+                                if (status == AppLocalizations.of(context)!.viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.invoice,
                                           arguments: data)
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
 
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       print("updating status ");
                                       updateStatus(data);
                                     });
                                   });
-                                }
-
-
-
-
-                                else if (status == "OBSERVATION") {
+                                } else if (status == AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(
-                                          data!.ticketId, "Completed")
+                                      .acceptOrder(data!.ticketId, "Completed")
                                       .then((v) async {
-                                    await homeProvider.getacceptedOrders();
-
-                                    if (widget.arguments["day"] ==
-                                        "This Week") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedThisWeekOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else if (widget.arguments["day"] ==
-                                        "Tomorrow") {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTomorrowOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    } else {
-                                      setState(() {
-                                        data = homeProvider
-                                                .acceptedTodayOrdersList[
-                                            widget.arguments["ind"]];
-                                      });
-                                    }
+                                    await provider.getTicketData(
+                                        context, widget.ticketId);
+                                    data = provider.TicketDetails[0];
+                                    // if (widget.arguments["day"] ==
+                                    //     "This Week") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedThisWeekOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else if (widget.arguments["day"] ==
+                                    //     "Tomorrow") {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTomorrowOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     data = homeProvider
+                                    //             .acceptedTodayOrdersList[
+                                    //         widget.arguments["ind"]];
+                                    //   });
+                                    // }
                                     setState(() {
                                       updateStatus(data);
                                     });
                                   });
                                 }
                               },
-                              child: status == "START"
+                              child: status == AppLocalizations.of(context)!.start
                                   ? CustomAcceptButtonWidget(
-                                      text: "CANCEL",
+                                      text: AppLocalizations.of(context)!.cancel,
                                       height: 34.h,
                                       width: 107.w,
                                       radius: 7.r,
@@ -868,9 +867,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           color: AppColors.secondary),
                                       color: Color.fromARGB(255, 248, 38, 51),
                                     )
-                                  : status == "VIEW CHECKLIST"
+                                  : status == AppLocalizations.of(context)!.viewchecklist
                                       ? CustomAcceptButtonWidget(
-                                          text: "CREATE INVOICE",
+                                          text: AppLocalizations.of(context)!.createinvoice,
                                           height: 34.h,
                                           width: 127.w,
                                           radius: 7.r,
@@ -882,9 +881,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           color:
                                               Color.fromARGB(186, 255, 54, 165),
                                         )
-                                      : status == "OBSERVATION"
+                                      : status == AppLocalizations.of(context)!.observation
                                           ? CustomAcceptButtonWidget(
-                                              text: "COMPLETED",
+                                              text: AppLocalizations.of(context)!.completed,
                                               height: 34.h,
                                               width: 127.w,
                                               radius: 7.r,

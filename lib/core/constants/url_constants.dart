@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names, unnecessary_brace_in_string_interps
 
-  const String BASE_URL = "https://pickaservice.com";
+  const String BASE_URL = "https://live.pickaservice.com";
 
 //=====================Auth Api's ===========================
 const String LOGIN = "${BASE_URL}/api/auth/webLogin";
@@ -20,6 +20,8 @@ const String GETACCEPTEDORDERS = "${BASE_URL}/api/tickets/listAcceptedOrders";
 //================== SCHEDULE HISTORY PAGE ==============================
 
 const String GETUPCOMINGTICKETS = "${BASE_URL}/api/tickets/upcoming";
+
+const String FILTERCOMPLETEDTASK = "${BASE_URL}/api/tickets/completedTickets";
 
 // ================ LOCATION API================================
 

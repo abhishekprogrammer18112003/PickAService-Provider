@@ -15,7 +15,8 @@ import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -62,10 +63,17 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             CustomSpacers.height70,
             //Icons
-            Image.asset(
-              AppImages.pick_a_service,
-              height: 42.h,
-              width: 266.w,
+            Container(
+              height : 42.h,
+              width:  500.w, 
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  AppImages.pick_a_service,
+                  height: 42.h,
+                  width: 266.w,
+                ),
+              ),
             ),
             CustomSpacers.height160,
             CustomSpacers.height10,
@@ -74,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomTextFieldWidget(
               obsecure: false,
               controller: _emailController,
-              hintText: "Email",
+              hintText: AppLocalizations.of(context)!.email,
               icon: Icons.email_outlined,
               validator: "Enter your email",
             ),
@@ -84,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomTextFieldWidget(
               obsecure: true,
               controller: _passwordController,
-              hintText: "Password",
+              hintText: AppLocalizations.of(context)!.password,
               icon: Icons.lock_outline,
               validator: "Enter your password",
             ),
@@ -104,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomSpacers.height24,
             Center(
               child: CustomButton(
-                strButtonText: "LOG IN",
+                strButtonText: AppLocalizations.of(context)!.login,
                 buttonAction: () {
                   if (_emailController.text.isEmpty ||
                       _passwordController.text.isEmpty) {

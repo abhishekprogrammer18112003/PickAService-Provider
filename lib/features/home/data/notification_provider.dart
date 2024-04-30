@@ -27,7 +27,7 @@ class NotificationProvider extends ChangeNotifier {
 
         notifyListeners();
       }
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 4));
 
       print("Fetching Notification");
       int techId = SharedPreferencesManager.getInt("user_id");

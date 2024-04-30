@@ -7,9 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:pick_a_service/core/constants/app_data.dart';
 import 'package:pick_a_service/firebase_options.dart';
 import 'package:pick_a_service/flutter_background_service.dart';
+import 'package:pick_a_service/language_provider.dart';
 import 'package:pick_a_service/location_service.dart';
 import 'package:pick_a_service/main.dart';
 import 'package:pick_a_service/notification_service.dart';
+import 'package:provider/provider.dart';
 import 'shared_preference_manager.dart';
 
 NotificationService notificationService = NotificationService();
@@ -20,6 +22,7 @@ class AppManager {
 
   
   static Future<void> initialize() async {
+
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     await SharedPreferencesManager.init();
     await Firebase.initializeApp(
@@ -28,6 +31,8 @@ class AppManager {
     lang = SharedPreferencesManager.getString("lang");
     lang == "" ? lang = "en"  : lang = SharedPreferencesManager.getString("lang");  
     print(lang);
+
+    
    
 
     // service.initializeService();

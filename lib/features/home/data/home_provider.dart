@@ -205,7 +205,6 @@ class HomeProvider extends ChangeNotifier {
       int subcategoryId,
       int modelID,
       BuildContext context,
-      AcceptedOrdersModel a,
       String image) async {
     int techId = SharedPreferencesManager.getInt("user_id");
     _isSaving = true;
@@ -565,7 +564,7 @@ class HomeProvider extends ChangeNotifier {
       Map<String, dynamic> body = {
         "mop": mop,
         "invoiceNo": invoiceNo,
-        "paidAmount": paidAmount.toString(),
+        "paidAmount": int.parse(paidAmount),
         "invoiceId": invoiceId,
         "ticketId": ticketId,
         "paidInvoiceItems": d
@@ -573,6 +572,9 @@ class HomeProvider extends ChangeNotifier {
       http.Response response = await http.post(Uri.parse(OFFLINEPAYMENT),
           headers: headers, body: jsonEncode(body));
 
+
+          print("===========body==========");
+      print(jsonEncode(body));
       var data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {

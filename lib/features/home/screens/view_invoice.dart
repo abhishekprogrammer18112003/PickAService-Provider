@@ -10,15 +10,17 @@ import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/models/invoice_model.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 import 'package:pick_a_service/ui/molecules/custom_autocomplete_text_field.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:pick_a_service/ui/molecules/custom_drop_down.dart';
 import 'package:pick_a_service/ui/molecules/custom_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewInvoiceScreen extends StatefulWidget {
-  AcceptedOrdersModel arguments;
+  TicketDetailsModel arguments;
   ViewInvoiceScreen({super.key, required this.arguments});
 
   @override
@@ -32,6 +34,7 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
   List<Map<String, dynamic>> list = [];
   List<InvoiceModel> data = [];
   int totalMoney = 0;
+  Set<String> items = {} ;
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +42,7 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<HomeProvider>(context, listen: false)
           .viewInvoice(widget.arguments.invoiceId, context);
+     items =   {AppLocalizations.of(context)!.cash, AppLocalizations.of(context)!.card};
     });
 
 
@@ -63,7 +67,7 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
           backgroundColor: Color.fromARGB(255, 244, 246, 251),
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: Text("Invoice",
+          title: Text(AppLocalizations.of(context)!.invoice,
               style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
           leading: GestureDetector(
               onTap: () => CustomNavigator.pop(context),
@@ -134,7 +138,7 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Price",
+                      Text(AppLocalizations.of(context)!.price,
                           style: TextStyle(
                               fontSize: 24.h, fontWeight: FontWeight.w600)),
                       Text(
@@ -212,20 +216,24 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
           children: [
             CustomSpacers.height20,
             Text(
-              "Mode of payment - ",
+              AppLocalizations.of(context)!.modeofpayment,
               style: TextStyle(
                 fontSize: 16.h,
                 fontWeight: FontWeight.w500,
               ),
             ),
             CustomDropdown(
-                items: AppData.items,
-                hintText: "Mode of payment",
+                items: items,
+                hintText: AppLocalizations.of(context)!.modeofpayment,
                 validator: (v) {},
-                onChanged: (v) {}),
+                onChanged: (v) {
+                  setState(() {
+                    mop = v!;
+                  });
+                }),
             CustomSpacers.height40,
             Text(
-              "Invoice No. - ",
+              AppLocalizations.of(context)!.invoiceno,
               style: TextStyle(
                 fontSize: 16.h,
                 fontWeight: FontWeight.w500,
@@ -233,11 +241,11 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
             ),
             CustomTextField(
               controller: _invoiceController,
-              hint: "Enter Invoice No.",
+              hint: AppLocalizations.of(context)!.enterinvoicenno,
             ),
             CustomSpacers.height20,
             Text(
-              "Invoice Amount - ",
+              AppLocalizations.of(context)!.invoiceamount,
               style: TextStyle(
                 fontSize: 16.h,
                 fontWeight: FontWeight.w500,
@@ -245,13 +253,13 @@ class _ViewInvoiceScreenState extends State<ViewInvoiceScreen> {
             ),
             CustomTextField(
               controller: _amountController,
-              hint: "Enter amount",
+              hint: AppLocalizations.of(context)!.enteramount,
             ),
             CustomSpacers.height36,
             Center(
                 child: !value!.isPayment
                     ? CustomButton(
-                        strButtonText: "Save",
+                        strButtonText: AppLocalizations.of(context)!.save,
                         buttonAction: () {
 
                           // if(_amountController.text == value.viewInvoiceData["total_amount"].toString()){

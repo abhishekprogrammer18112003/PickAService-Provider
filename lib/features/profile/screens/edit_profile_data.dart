@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:pick_a_service/core/constants/app_colors.dart';
 import 'package:pick_a_service/core/constants/app_icons.dart';
@@ -14,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileDataPage extends StatefulWidget {
   Map<String, dynamic> data;
@@ -63,7 +65,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: true,
-          title: Text("EDIT PROFILE",
+          title: Text(AppLocalizations.of(context)!.editprofile.toUpperCase(),
               style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
           leading: GestureDetector(
               onTap: () => CustomNavigator.pop(context),
@@ -112,7 +114,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                           CustomSpacers.height20,
 
                           //=============== NAME =======================
-                          const Text("Name"),
+                          Text(AppLocalizations.of(context)!.name),
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
@@ -157,7 +159,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                           CustomSpacers.height30,
 
                           //==================PHONE NUMBER=======================
-                          const Text("Phone Number"),
+                          Text(AppLocalizations.of(context)!.mobile),
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
@@ -236,7 +238,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                       controller: _otpController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Enter OTP',
+                        labelText: AppLocalizations.of(context)!.enterotp,
                         border: OutlineInputBorder(),
                       ),
                       maxLength: 6,
@@ -253,7 +255,9 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
               Center(
                   child: !value.isEditLoading
                       ? CustomButton(
-                          strButtonText: !otp ? "Edit profile" : "Save Changes",
+                          strButtonText: !otp
+                              ? AppLocalizations.of(context)!.editprofile
+                              : AppLocalizations.of(context)!.savechanges,
                           buttonAction: () async {
                             if (!otp &&
                                 widget.data["FullName"] !=
@@ -264,9 +268,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                               await value.editPersonalDataWithoutPhone(
                                   context,
                                   _nameController.text,
-                                  _image != null
-                                      ? _image!.path
-                                      : "");
+                                  _image != null ? _image!.path : "");
 
                               await value.editPersonalDataWithPhone(
                                   context,
@@ -281,9 +283,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                               await value.editPersonalDataWithoutPhone(
                                   context,
                                   _nameController.text,
-                                  _image != null
-                                      ? _image!.path
-                                      : "");
+                                  _image != null ? _image!.path : "");
                               CustomNavigator.pop(context);
                               Navigator.pop(context);
                             } else if (!otp &&
@@ -300,15 +300,11 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                               });
                             }
 
-                           
-                              await value.editPersonalDataWithoutPhone(
-                                  context,
-                                  _nameController.text,
-                                  _image != null
-                                      ? _image!.path
-                                      : "");
-                            
-                            
+                            await value.editPersonalDataWithoutPhone(
+                                context,
+                                _nameController.text,
+                                _image != null ? _image!.path : "");
+
                             if (_phoneNoController.text.length != 8) {
                               OverlayManager.showToast(
                                   type: ToastType.Alert,
