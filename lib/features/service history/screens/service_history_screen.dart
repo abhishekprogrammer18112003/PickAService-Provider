@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pick_a_service/core/constants/app_colors.dart';
 import 'package:pick_a_service/core/constants/app_icons.dart';
 import 'package:pick_a_service/core/utils/custom_spacers.dart';
@@ -10,10 +11,12 @@ import 'package:pick_a_service/features/home/data/notification_provider.dart';
 import 'package:pick_a_service/features/home/screens/notification_screen.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
 import 'package:pick_a_service/features/service%20history/screens/completed.dart';
+import 'package:pick_a_service/features/service%20history/screens/decline.dart';
 import 'package:pick_a_service/features/service%20history/screens/upcoming.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServiceHistoryScreen extends StatefulWidget {
   const ServiceHistoryScreen({super.key});
@@ -32,7 +35,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
       await Provider.of<ScheduleHistoryProvider>(context, listen: false)
           .getUpcomingTicketsData(context);
      await Provider.of<ScheduleHistoryProvider>(context, listen: false)
-          .completeTask(); 
+          .completeTask("Completed"); 
     });
   }
 
@@ -40,7 +43,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
   Widget build(BuildContext context) {
     final notiProvider = Provider.of<NotificationProvider>(context);
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(126.h), // Custom height
@@ -53,11 +56,11 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
               indicatorColor: AppColors.primary,
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle:
-                  TextStyle(fontSize: 14.h, fontWeight: FontWeight.w900),
+                  TextStyle(fontSize: 12.h, fontWeight: FontWeight.w900),
               labelColor: AppColors.primary,
               unselectedLabelColor: const Color.fromARGB(205, 0, 0, 0),
               unselectedLabelStyle:
-                  TextStyle(fontSize: 14.h, fontWeight: FontWeight.w500),
+                  TextStyle(fontSize: 12.h, fontWeight: FontWeight.w500),
               tabs: [
                 Tab(
                   child: Row(
@@ -69,7 +72,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                         width: 15.w,
                       ),
                       CustomSpacers.width10,
-                      Text("UPCOMING")
+                      Text(AppLocalizations.of(context)!.upcoming)
                     ],
                   ),
                 ),
@@ -83,7 +86,22 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
                         width: 15.w,
                       ),
                       CustomSpacers.width10,
-                      Text("COMPLETED")
+                      Text(AppLocalizations.of(context)!.completed)
+                    ],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Image.asset(
+                      //   AppIcons.decline,
+                      //   height: 17.h,
+                      //   width: 15.w,
+                      // ),
+                      Icon(Icons.design_services_outlined),
+                      CustomSpacers.width10,
+                      Text(AppLocalizations.of(context)!.decline.toUpperCase())
                     ],
                   ),
                 )
@@ -138,8 +156,9 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
             return TabBarView(
               physics: NeverScrollableScrollPhysics(),
               children: [
-                UpcomingScreen(data: value.upcomingTickets  , title: "Upcoming",),
-                CompletedScreen(data: value.completeTaskList , title: "Completed",),
+                UpcomingScreen(data: value.upcomingTickets  , title: AppLocalizations.of(context)!.upcoming,),
+                CompletedScreen(data: value.completeTaskList , title: AppLocalizations.of(context)!.completed,),
+                DeclineScreen(data : value.upcomingTickets , title : AppLocalizations.of(context)!.decline),
               ],
             );
           },

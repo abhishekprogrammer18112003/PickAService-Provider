@@ -8,7 +8,9 @@ import 'package:pick_a_service/features/home/data/home_provider.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/screens/orders_screen.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
+import 'package:pick_a_service/features/home/widgets/orders_widget_main.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DateScreen extends StatefulWidget {
   List<AcceptedOrdersModel> data;
@@ -42,7 +44,7 @@ class _DateScreenState extends State<DateScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Text(
-                        "Orders",
+                        AppLocalizations.of(context)!.orders,
                         style: TextStyle(
                             fontSize: 24.h, fontWeight: FontWeight.w600),
                       ),
@@ -53,7 +55,7 @@ class _DateScreenState extends State<DateScreen> {
                 )
               : Center(
                   child: Text(
-                    "No orders for ${widget.title} !",
+                    AppLocalizations.of(context)!.noordersfor  + widget.title,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 )
@@ -83,7 +85,7 @@ class _DateScreenState extends State<DateScreen> {
                   ? Colors.grey.withOpacity(0.5) // Change to the desired color
                   : Colors.transparent,
             ),
-            child: OrdersWidget(data: widget.data[index]), // Your OrdersWidget
+            child: OrdersWidgetMain(data: widget.data[index]), // Your OrdersWidget
           ),);
             
      
@@ -100,7 +102,8 @@ class _DateScreenState extends State<DateScreen> {
             opacity: animation,
             child: OrdersScreen(
               arguments: {"day": widget.title, "ind": index},
-              data: widget.data[index],
+              // data: widget.data[index],
+              ticketId: widget.data[index].ticketId,
             ), // Replace with your notification screen
           );
         },

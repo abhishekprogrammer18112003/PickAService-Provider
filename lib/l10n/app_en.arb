@@ -1,0 +1,96 @@
+{
+    "email" : "Email",
+    "password" : "Password",
+    "login" : "LOG IN",
+    "chooseyourlanguage" : "Choose your language" ,
+    "today" : "TODAY",
+    "tomorrow" : "TOMORROW" , 
+    "thisweek" : "THIS WEEK",
+    "upcoming"  : "UPCOMING",
+    "completed" : "COMPLETED",
+    "orders" : "Orders",
+
+
+    "date" : "Date" , 
+    "time"  :"Time",
+    "status" : "Status",
+    "noodata" : "No Data !",
+
+
+    "notifications" : "Notifications",
+    "nonewnotificaitons" : "No new notificaitons !",
+    "accept" : "Accept",
+    "decline" : "Decline",
+
+    "ticketdetails"  : "Ticket Details", 
+    "customerdetails" : "Customer Details",
+    "name" : "Name", 
+    "mobile" : "Mobile Number",
+    "desc" : "Description",
+    "address" : "Address",
+    "getdirection" : "Get Direction",
+    "cancel" : "Cancel",
+    "start" : "START",
+    "reached" : "REACHED" , 
+    "createchecklist" : "CREATE CHECKLIST",
+    "checklist" : "Checklist" , 
+    "chooseitemsfromthefollowing" : "Choose items from the following checklists -",
+    "tons" : "Tons" ,
+    "model" : "Model",
+    "noimageselected" : "No Image Selected.",
+    "takephoto" : "Take Photo",
+    "uploadfromgallery" : "Upload from gallery",
+    "savechecklist" : "Save Checklist" , 
+    "createinvoice" : "CREATE INVOICE", 
+    "viewchecklist" : "VIEW CHECKLIST",
+    "selectedton"  : "Selected Ton", 
+    "selectedmodel" : "Selected Model",
+    "waitfortheimagetoload" : "Wait for the image to load....",
+    "search" : "Search....." , 
+    "invoice" : "Invoice",
+    "price" : "Price" , 
+    "generateinvoice" : "Generate Invoice" , 
+    "viewinvoice" :  "VIEW INVOICE",
+    "observation" : "OBSERVATION",
+    "mandatory" : "Mandatory",
+    "noordersfor" : "No orders for ",
+
+    "modeofpayment" :  "Mode of payment", 
+    "invoiceno" : "Invoice No.",
+    "invoiceamount" : "Invoice Amount", 
+    "enterinvoicenno" : "Enter Invoice No.",
+    "enteramount" : "Enter Amount",
+    "save" : "Save",
+    "cash" :  "Cash" , 
+    "card" : "Card" ,
+
+
+
+
+
+    "changepassword"  : "Change Password",
+    "editprofile"  : "Edit Profile" , 
+    "newpassword" : "New Password",
+    "reenternewpassword" :  "Re-Enter new password" ,
+    "savechanges" : "Save Changes",
+    "editprofile" :  "Edit Profile", 
+    "enterotp" : "Enter OTP",
+
+
+    
+    
+
+
+
+
+
+
+
+    "welcome" : "Welcome", 
+    "personaldata" : "Personal Data",
+    "deleteaccount" : "Delete Account",
+    "language" : "Language",
+    "contactus" : "Contact Us",
+    "about" : "About Pick A Service",
+    "logout" : "Log Out"
+}

@@ -6,6 +6,7 @@ import 'package:pick_a_service/core/constants/app_icons.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'package:pick_a_service/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScheduleHistoryScreenWidget extends StatefulWidget {
   ScheduleHistoryModel data;
@@ -137,16 +138,16 @@ class _ScheduleHistoryScreenWidgetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo, AppColors.primary),
-            _buildWidget("Date", widget.data.date, AppColors.primary),
-            _buildWidget("Time", widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders, widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time, AppColors.primary),
             widget.data.WorkStatus == "Assigned" ||
                     widget.data.WorkStatus == "Reassigned"
-                ? _buildWidget("Status", "Pending", Colors.red)
+                ? _buildWidget(AppLocalizations.of(context)!.status, "Pending", Colors.red)
                 : widget.data.WorkStatus == "Accepted"
-                    ? _buildWidget("Status", "Accepted", Colors.green)
+                    ? _buildWidget(AppLocalizations.of(context)!.status, "Accepted", Colors.green)
                     : _buildWidget(
-                        "Status", widget.data.WorkStatus, AppColors.primary),
+                        AppLocalizations.of(context)!.status, widget.data.WorkStatus, AppColors.primary),
           ],
         ),
       );
@@ -199,14 +200,14 @@ class _ScheduleHistoryScreenWidgetState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.data.CategoryNameEn,
+                            widget.data.CategoryNameAr,
                             style: TextStyle(
                                 fontSize: 12.h,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.secondary),
                           ),
                           Text(
-                            widget.data.SubCategoryNameEn,
+                            widget.data.SubCategoryNameAr,
                             style: TextStyle(
                                 fontSize: 10.h,
                                 fontWeight: FontWeight.w500,
@@ -231,16 +232,16 @@ class _ScheduleHistoryScreenWidgetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo, AppColors.primary),
-            _buildWidget("Date", widget.data.date, AppColors.primary),
-            _buildWidget("Time", widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders, widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time, AppColors.primary),
             widget.data.WorkStatus == "Assigned" ||
                     widget.data.WorkStatus == "Reassigned"
-                ? _buildWidget("Status", "Pending", Colors.red)
+                ? _buildWidget(AppLocalizations.of(context)!.status, "Pending", Colors.red)
                 : widget.data.WorkStatus == "Accepted"
-                    ? _buildWidget("Status", "Accepted", Colors.green)
+                    ? _buildWidget(AppLocalizations.of(context)!.status, "Accepted", Colors.green)
                     : _buildWidget(
-                        "Status", widget.data.WorkStatus, AppColors.primary),
+                        AppLocalizations.of(context)!.status, widget.data.WorkStatus, AppColors.primary),
           ],
         ),
       );

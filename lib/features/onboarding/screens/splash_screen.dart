@@ -8,8 +8,11 @@ import 'package:pick_a_service/core/managers/app_manager.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/onboarding/screens/login_screen.dart';
+import 'package:pick_a_service/language_provider.dart';
+import 'package:pick_a_service/main.dart';
 import 'package:pick_a_service/navbar.dart';
 import 'package:pick_a_service/notification_service.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../route/app_pages.dart';
 import '../../../../route/custom_navigator.dart';
@@ -33,53 +36,58 @@ class _SplashScreenState extends State<SplashScreen> {
 
   NotificationService service = NotificationService();
   Future<void> init() async {
-    
+    if (lang == "ar") {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        Provider.of<LanguageChangeProvider>(context, listen: false)
+            .changeLanguage(Locale('ar'));
+      });
+    }
 
     if (SharedPreferencesManager.getBool("isLogin")) {
-        Timer(const Duration(seconds: 3), () {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return NavBarScreen();
-              },
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child,
-                );
-              },
-            ),
-          );
-          // CustomNavigator.pushReplace(context, AppPages.navbar);
-        });
-      } else {
-        Timer(const Duration(seconds: 3), () {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return LoginScreen();
-              },
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child,
-                );
-              },
-            ),
-          );
-          // CustomNavigator.pushReplace(context, AppPages.login);
-        });
-      }
+      Timer(const Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return NavBarScreen();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );
+        // CustomNavigator.pushReplace(context, AppPages.navbar);
+      });
+    } else {
+      Timer(const Duration(seconds: 3), () {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return LoginScreen();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );
+        // CustomNavigator.pushReplace(context, AppPages.login);
+      });
+    }
   }
 
   @override

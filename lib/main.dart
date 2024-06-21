@@ -11,17 +11,17 @@ import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/home/data/home_provider.dart';
 import 'package:pick_a_service/features/home/data/notification_provider.dart';
-import 'package:pick_a_service/features/home/screens/payment.dart';
 import 'package:pick_a_service/features/onboarding/data/provider/login_provider.dart';
 import 'package:pick_a_service/features/onboarding/screens/splash_screen.dart';
 import 'package:pick_a_service/features/profile/data/profile_provider.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
-import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
-import 'package:pick_a_service/firebase_options.dart';
-import 'package:pick_a_service/flutter_background_service.dart';
+import 'package:pick_a_service/features/ticket_details_provider.dart';
+import 'package:pick_a_service/language_provider.dart';
 import 'package:pick_a_service/notification_service.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 String lang = "";
 Future<void> main() async {
@@ -49,7 +49,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     notificationService.requestNotificationPermission();
-  
+   
+
     getDeviceID();
     notificationService.setupInteractMessage(context);
     notificationService.firebaseInit(context);
@@ -84,28 +85,38 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => ScheduleHistoryProvider(),
         ),
-
         ChangeNotifierProvider(
           create: (_) => ProfileProvider(),
         ),
-
         ChangeNotifierProvider(
-          create: (_) => NotificationServiceProvider(),
+          create: (_) => TicketDetailsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LanguageChangeProvider(),
         ),
       ],
       child: ScreenUtilInit(
           designSize:
               const Size(VALUE_FIGMA_DESIGN_WIDTH, VALUE_FIGMA_DESIGN_HEIGHT),
-          builder: () => MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'pick a service',
-                initialRoute: '/',
-                onGenerateRoute: CustomNavigator.controller,
-                themeMode: ThemeMode.light,
-                builder: OverlayManager.transitionBuilder(),
-                theme: AppThemes.light,
-                home: const SplashScreen(),
-                // home : PaymentPage()
+          builder: () => Consumer<LanguageChangeProvider>(
+                builder: (context, value, child) => MaterialApp(
+                  locale: value.appLocale,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [Locale('en'), Locale('ar')],
+                  debugShowCheckedModeBanner: false,
+                  title: 'pick a service',
+                  initialRoute: '/',
+                  onGenerateRoute: CustomNavigator.controller,
+                  themeMode: ThemeMode.light,
+                  builder: OverlayManager.transitionBuilder(),
+                  theme: AppThemes.light,
+                  home: const SplashScreen(),
+                ),
               )),
     );
   }

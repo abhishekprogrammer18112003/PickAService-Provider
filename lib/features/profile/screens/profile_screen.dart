@@ -6,12 +6,15 @@ import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/profile/data/profile_provider.dart';
 import 'package:pick_a_service/features/profile/screens/personal_data.dart';
 import 'package:pick_a_service/features/profile/widgets/custom_container_widget.dart';
+import 'package:pick_a_service/language_provider.dart';
 import 'package:pick_a_service/main.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -46,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LanguageChangeProvider>(context , listen:  false);
     return RefreshIndicator(
       onRefresh: () async {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -73,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Welcome",
+                        Text(AppLocalizations.of(context)!.welcome,
                             style: TextStyle(
                                 fontSize: 16.h,
                                 fontWeight: FontWeight.w400,
@@ -100,13 +104,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _navigate(context);
                       },
                       child: CustomContainerWidget(
-                          image: AppIcons.profileData, title: "Personal Data"),
+                          image: AppIcons.profileData, title: AppLocalizations.of(context)!.personaldata),
                     ),
                     CustomSpacers.height16,
                     //DELETE ACCOUNT
                     CustomContainerWidget(
                         image: AppIcons.profiledeleteaccount,
-                        title: "Delete Account"),
+                        title: AppLocalizations.of(context)!.deleteaccount),
 
                     CustomSpacers.height16,
 
@@ -133,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           CustomSpacers.width18,
                           Text(
-                            "Language",
+                            AppLocalizations.of(context)!.language,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -160,6 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : AppColors.secondary),
                           ),
                           onTap: () {
+                            provider.changeLanguage(Locale('en'));
                             SharedPreferencesManager.setString("lang", "en");
                             lang = "en";
                             setState(() {});
@@ -181,6 +186,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ? AppColors.primary
                                       : AppColors.secondary)),
                           onTap: () {
+                            provider.changeLanguage(Locale('ar'));
+                            
                             SharedPreferencesManager.setString("lang", "ar");
                             lang = "ar";
                             setState(() {});
@@ -206,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: CustomContainerWidget(
                           image: AppIcons.profilecontactus,
-                          title: "Contact Us"),
+                          title: AppLocalizations.of(context)!.contactus),
                     ),
                     CustomSpacers.height16,
 
@@ -222,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       child: CustomContainerWidget(
                           image: AppIcons.profileabout,
-                          title: "About Pick A Service"),
+                          title: AppLocalizations.of(context)!.about),
                     ),
                     CustomSpacers.height16,
 
@@ -233,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CustomNavigator.pushReplace(context, AppPages.login);
                       },
                       child: CustomContainerWidget(
-                          image: AppIcons.profileLogout, title: "Log Out"),
+                          image: AppIcons.profileLogout, title: AppLocalizations.of(context)!.logout),
                     ),
                   ]),
             ),

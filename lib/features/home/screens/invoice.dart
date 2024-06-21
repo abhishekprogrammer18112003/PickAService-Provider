@@ -9,13 +9,15 @@ import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/models/invoice_model.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 import 'package:pick_a_service/ui/molecules/custom_autocomplete_text_field.dart';
 import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InvoiceScreen extends StatefulWidget {
-  AcceptedOrdersModel arguments;
+  TicketDetailsModel arguments;
   InvoiceScreen({super.key, required this.arguments});
 
   @override
@@ -33,7 +35,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<HomeProvider>(context, listen: false)
-          .getInvoice(1, widget.arguments.ticketId);
+          .getInvoice(widget.arguments.SubCategoryId, widget.arguments.ticketId);
 
       await Provider.of<HomeProvider>(context, listen: false)
           .getFilteredInvoice("", widget.arguments.ticketId);
@@ -98,7 +100,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             backgroundColor: Color.fromARGB(255, 244, 246, 251),
             automaticallyImplyLeading: false,
             centerTitle: true,
-            title: Text("Invoice",
+            title: Text(AppLocalizations.of(context)!.invoice,
                 style: TextStyle(fontSize: 20.h, fontWeight: FontWeight.w600)),
             leading: GestureDetector(
                 onTap: () => CustomNavigator.pop(context),
@@ -132,7 +134,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     CustomSpacers.height10,
                     !value.isGeneratingInvoice
                         ? CustomButton(
-                            strButtonText: "Generate Invoice",
+                            strButtonText:AppLocalizations.of(context)!.generateinvoice,
                             buttonAction: () {
                               value.createInvoice(widget.arguments.CustomerId,
                                   widget.arguments.ticketId, list, context);
@@ -182,8 +184,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                     va, widget.arguments.ticketId);
                               },
                               decoration: InputDecoration(
-                                labelText: "Search",
-                                hintText: "Search",
+                                labelText: AppLocalizations.of(context)!.search,
+                                hintText: AppLocalizations.of(context)!.search,
                                 prefixIcon: Icon(Icons.search),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
@@ -250,7 +252,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       CustomSpacers.width10,
                       Icon(Icons.search),
                       CustomSpacers.width10,
-                      Text("Search.......")
+                      Text(AppLocalizations.of(context)!.search)
                     ],
                   ),
                 ),
@@ -277,7 +279,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Price",
+                            Text(AppLocalizations.of(context)!.price,
                                 style: TextStyle(
                                     fontSize: 24.h,
                                     fontWeight: FontWeight.w600)),
@@ -329,7 +331,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                                 size: 20,
                                               ))
                                           : Text(
-                                              "Mandatory" , 
+                                              AppLocalizations.of(context)!.mandatory , 
                                               style: TextStyle(fontSize: 12 , fontWeight: FontWeight.w500 , color: Colors.green),
                                             ),
                                     ],

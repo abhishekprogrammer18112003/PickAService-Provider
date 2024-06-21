@@ -24,6 +24,8 @@ class TicketDetailsModel {
     required this.CategoryId,
     required this.CategoryNameEn,
     required this.CategoryNameAr,
+    required this.catImgUrl,
+    required this.catColor,
     required this.NameOfAddress,
     required this.Area,
     required this.Block,
@@ -60,6 +62,8 @@ class TicketDetailsModel {
   late final int CategoryId;
   late final String CategoryNameEn;
   late final String CategoryNameAr;
+  late final String catImgUrl;
+  late final String catColor;
   late final String NameOfAddress;
   late final String Area;
   late final String Block;
@@ -97,6 +101,8 @@ class TicketDetailsModel {
     CategoryId = json['CategoryId'];
     CategoryNameEn = json['CategoryNameEn'];
     CategoryNameAr = json['CategoryNameAr'];
+    catImgUrl = json['catImgUrl'];
+    catColor = json['catColor'];
     NameOfAddress = json['NameOfAddress'];
     Area = json['Area'];
     Block = json['Block'];
@@ -136,6 +142,8 @@ class TicketDetailsModel {
     _data['CategoryId'] = CategoryId;
     _data['CategoryNameEn'] = CategoryNameEn;
     _data['CategoryNameAr'] = CategoryNameAr;
+    _data['catImgUrl'] = catImgUrl;
+    _data['catColor'] = catColor;
     _data['NameOfAddress'] = NameOfAddress;
     _data['Area'] = Area;
     _data['Block'] = Block;

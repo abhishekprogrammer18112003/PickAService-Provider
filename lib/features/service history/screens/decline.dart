@@ -14,16 +14,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
-class UpcomingScreen extends StatefulWidget {
+class DeclineScreen extends StatefulWidget {
   String title;
   List<ScheduleHistoryModel> data;
-  UpcomingScreen({super.key, required this.data, required this.title});
+  DeclineScreen({super.key, required this.data, required this.title});
 
   @override
-  State<UpcomingScreen> createState() => _UpcomingScreenState();
+  State<DeclineScreen> createState() => _DeclineScreenState();
 }
 
-class _UpcomingScreenState extends State<UpcomingScreen> {
+class _DeclineScreenState extends State<DeclineScreen> {
   int _selectedIndex = -1;
   @override
   Widget build(BuildContext context) {

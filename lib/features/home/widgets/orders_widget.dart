@@ -7,9 +7,11 @@ import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/main.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrdersWidget extends StatefulWidget {
-  AcceptedOrdersModel data;
+  TicketDetailsModel data;
   OrdersWidget({super.key, required this.data});
 
   @override
@@ -29,7 +31,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
   void initState() {
     super.initState();
 
-    rgba = AppData.hexToRgba(widget.data.color);
+    rgba = AppData.hexToRgba(widget.data.catColor);
     print("Language");
     print(lang);
   }
@@ -107,9 +109,9 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                      AppIcons.airconditioning,
-                      height: 22.h,
-                      width: 30.w,
+                        AppIcons.airconditioning,
+                        height: 22.h,
+                        width: 30.w,
                       ),
                       // ,
                       //  SizedBox(
@@ -189,9 +191,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo),
-            _buildWidget("Date", widget.data.date),
-            _buildWidget("Time", widget.data.time),
+            _buildWidget(
+                AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
           ],
         ),
       );
@@ -232,8 +235,8 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                     children: [
                       Image.asset(
                         AppIcons.airconditioning,
-                      height: 22.h,
-                      width: 30.w,
+                        height: 22.h,
+                        width: 30.w,
                       ),
 
                       // SizedBox(
@@ -313,9 +316,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo),
-            _buildWidget("Date", widget.data.date),
-            _buildWidget("Time", widget.data.time),
+            _buildWidget(
+                AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
           ],
         ),
       );

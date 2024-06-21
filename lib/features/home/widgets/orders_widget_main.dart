@@ -6,19 +6,19 @@ import 'package:pick_a_service/core/constants/app_data.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
-import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'package:pick_a_service/main.dart';
 import 'package:pick_a_service/ticket_details_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class NotificationPendingOrdersWidget extends StatefulWidget {
-  TicketDetailsModel data;
-  NotificationPendingOrdersWidget({super.key, required this.data});
+class OrdersWidgetMain extends StatefulWidget {
+  AcceptedOrdersModel data;
+  OrdersWidgetMain({super.key, required this.data});
 
   @override
-  State<NotificationPendingOrdersWidget> createState() => _NotificationPendingOrdersWidgetState();
+  State<OrdersWidgetMain> createState() => _OrdersWidgetMainState();
 }
 
-class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrdersWidget> {
+class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
   List<int> rgba = [];
   // String CategoryNameEn = "",
   //     SubCategoryNameEn = "",
@@ -31,7 +31,7 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
   void initState() {
     super.initState();
 
-    // rgba = AppData.hexToRgba(widget.data);
+    rgba = AppData.hexToRgba(widget.data.color);
     print("Language");
     print(lang);
   }
@@ -113,6 +113,11 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
                         height: 22.h,
                         width: 30.w,
                       ),
+                      // ,
+                      //  SizedBox(
+                      //     height: 30.h,
+                      //     width: 30.w,
+                      //     child: Image.network(widget.data.imgUrl)),
 
                       // Image.network(
                       //   BASE_URL +  widget.data.img,
@@ -162,6 +167,19 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+
+              Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      widget.data.WorkStatus,
+                      style: TextStyle(
+                          color: AppColors.black, fontWeight: FontWeight.w500),
+                    ),
+                  ))
             ],
           ),
         ),
@@ -173,9 +191,10 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo),
-            _buildWidget("Date", widget.data.date),
-            _buildWidget("Time", widget.data.time),
+            _buildWidget(
+                AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
           ],
         ),
       );
@@ -219,6 +238,11 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
                         height: 22.h,
                         width: 30.w,
                       ),
+
+                      // SizedBox(
+                      //     height: 30.h,
+                      //     width: 30.w,
+                      //     child: Image.network(widget.data.imgUrl)),
 
                       // Image.network(
                       //   BASE_URL +  widget.data.img,
@@ -268,6 +292,19 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+
+              Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      widget.data.WorkStatus,
+                      style: TextStyle(
+                          color: AppColors.black, fontWeight: FontWeight.w500),
+                    ),
+                  ))
             ],
           ),
         ),
@@ -279,9 +316,10 @@ class _NotificationPendingOrdersWidgetState extends State<NotificationPendingOrd
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget("Order", widget.data.ticketNo),
-            _buildWidget("Date", widget.data.date),
-            _buildWidget("Time", widget.data.time),
+            _buildWidget(
+                AppLocalizations.of(context)!.orders, widget.data.ticketNo),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
           ],
         ),
       );

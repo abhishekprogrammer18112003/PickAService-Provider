@@ -8,6 +8,7 @@ import 'package:pick_a_service/features/service%20history/data/schedule_history_
 import 'package:pick_a_service/route/custom_navigator.dart';
 import 'package:pick_a_service/ui/global%20widegts/custom_button_accept_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AcceptRejectWidget extends StatefulWidget {
   int id;
@@ -34,7 +35,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
                       CustomNavigator.pop(context);
                     },
                     child: CustomAcceptButtonWidget(
-                      text: "ACCEPT",
+                      text: AppLocalizations.of(context)!.accept,
                       height: 34.h,
                       width: 107.w,
                       radius: 7.r,
@@ -50,7 +51,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
                       await provider.declineOrder(widget.id, context);
                     },
                     child: CustomAcceptButtonWidget(
-                      text: "DECLINE",
+                      text: AppLocalizations.of(context)!.decline,
                       height: 34.h,
                       width: 107.w,
                       radius: 7.r,

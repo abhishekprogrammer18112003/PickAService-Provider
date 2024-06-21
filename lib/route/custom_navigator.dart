@@ -20,6 +20,7 @@ import 'package:pick_a_service/features/service%20history/screens/pending_orders
 import 'package:pick_a_service/features/service%20history/screens/pending_orders_details_screen.dart';
 import 'package:pick_a_service/features/service%20history/screens/service_history_screen.dart';
 import 'package:pick_a_service/navbar.dart';
+import 'package:pick_a_service/ticket_details_model.dart';
 
 import '../core/app_imports.dart';
 import 'app_pages.dart';
@@ -57,7 +58,7 @@ class CustomNavigator {
         return MaterialPageRoute(
           builder: (context) => OrdersScreen(
             arguments: settings.arguments as Map<String, dynamic>,
-            data: settings.arguments as AcceptedOrdersModel,
+            ticketId: settings.arguments as int,
           ),
           settings: settings,
         );
@@ -72,7 +73,7 @@ class CustomNavigator {
         return MaterialPageRoute(
           builder: (context) => PendingOrdersDetailsScreen(
               arguments: settings.arguments as Map<String, dynamic>,
-              data: settings.arguments as ScheduleHistoryModel),
+              ticketId: settings.arguments as int),
           settings: settings,
         );
 
@@ -87,7 +88,7 @@ class CustomNavigator {
       case AppPages.checklist:
         return MaterialPageRoute(
           builder: (context) => CheckListScreen(
-            arguments: settings.arguments as AcceptedOrdersModel,
+            arguments: settings.arguments as TicketDetailsModel,
           ),
           settings: settings,
         );
@@ -95,7 +96,7 @@ class CustomNavigator {
       case AppPages.viewChecklist:
         return MaterialPageRoute(
           builder: (context) => ViewCheckListScreen(
-            arguments: settings.arguments as AcceptedOrdersModel,
+            arguments: settings.arguments as TicketDetailsModel,
           ),
           settings: settings,
         );
@@ -103,7 +104,7 @@ class CustomNavigator {
       case AppPages.invoice:
         return MaterialPageRoute(
           builder: (context) => InvoiceScreen(
-            arguments: settings.arguments as AcceptedOrdersModel,
+            arguments: settings.arguments as TicketDetailsModel,
           ),
           settings: settings,
         );
@@ -111,7 +112,7 @@ class CustomNavigator {
       case AppPages.viewInvoice:
         return MaterialPageRoute(
           builder: (context) => ViewInvoiceScreen(
-            arguments: settings.arguments as AcceptedOrdersModel,
+            arguments: settings.arguments as TicketDetailsModel,
           ),
           settings: settings,
         );
