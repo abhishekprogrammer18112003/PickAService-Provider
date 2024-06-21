@@ -109,12 +109,12 @@ class _CheckListScreenState extends State<CheckListScreen> {
                       SizedBox(height: 10.h),
                       ElevatedButton(
                         onPressed: getImagefromCamera,
-                        child: Text(AppLocalizations.of(context)!.takephoto),
+                        child: Text(AppLocalizations.of(context)!.takephoto),     
                       ),
                       SizedBox(height: 10.h),
                       ElevatedButton(
                         onPressed: getImageFromGallery,
-                        child: Text(AppLocalizations.of(context)!.chooseyourlanguage),
+                        child: Text(AppLocalizations.of(context)!.uploadfromgallery),
                       ),
                     ],
                   ),
@@ -130,6 +130,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
                                 strButtonText: AppLocalizations.of(context)!.savechecklist,
                                 buttonAction: () {
                                   print(_image!.path);
+                                  // print()
                                   // CustomNavigator.pop(context);
                                   value.createChecklist(
                                       widget.arguments.ticketId,

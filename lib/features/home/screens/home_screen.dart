@@ -25,20 +25,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<HomeProvider>(context, listen: false)
-          .getacceptedOrders();
-      await Provider.of<NotificationProvider>(context, listen: false)
-          .getNotificationData(context);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await Provider.of<HomeProvider>(context, listen: false)
+            .getacceptedOrders();
+        await Provider.of<NotificationProvider>(context, listen: false)
+            .getNotificationData(context);
 
-      await Provider.of<ProfileProvider>(context, listen: false)
-          .getPersonalData(context);
+        await Provider.of<ProfileProvider>(context, listen: false)
+            .getPersonalData(context);
 
-      final provider = Provider.of<ProfileProvider>(context, listen: false);
+        final provider = Provider.of<ProfileProvider>(context, listen: false);
 
-      provider.getName(provider.profileDataModel["FullName"]);
-      print(provider.name);
-    });
+        provider.getName(provider.profileDataModel["FullName"]);
+        print(provider.name);
+      });
   }
 
   NotificationService service = NotificationService();

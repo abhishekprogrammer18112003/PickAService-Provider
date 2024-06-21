@@ -7,6 +7,7 @@ import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/core/loaded_widget.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/features/home/models/notification_model.dart';
+import 'package:pick_a_service/route/custom_navigator.dart';
 
 class NotificationProvider extends ChangeNotifier {
   List<NotificationModel> _notificationList = [];
@@ -147,8 +148,7 @@ class NotificationProvider extends ChangeNotifier {
   // }
 
 //Accept ORDER
-
-  Future<void> acceptOrder(int ticketId, String status) async {
+  Future<void> acceptOrder(int ticketId, String status , BuildContext context ) async {
     int techId = await SharedPreferencesManager.getInt("user_id");
     String jwt_token = await SharedPreferencesManager.getString("jwt_token");
 
@@ -178,6 +178,9 @@ class NotificationProvider extends ChangeNotifier {
         OverlayManager.showToast(type: ToastType.Success, msg: data["message"]);
         _isLoading = false;
 
+        if(_notificationList.isEmpty && (status == "Accepted")){
+          CustomNavigator.pop(context);
+        }
         notifyListeners();
       } else {
         _isLoading = false;
@@ -195,7 +198,7 @@ class NotificationProvider extends ChangeNotifier {
   }
 
 //DECLINE ORDER
-  Future<void> declineOrder(int ticketId) async {
+  Future<void> declineOrder(int ticketId , BuildContext context) async {
     int techId = await SharedPreferencesManager.getInt("user_id");
     _isLoading = true;
     _isAcceptDeclineLoading = true;
@@ -218,7 +221,9 @@ class NotificationProvider extends ChangeNotifier {
         OverlayManager.showToast(type: ToastType.Success, msg: data["message"]);
         _isLoading = false;
         _isAcceptDeclineLoading = false;
-
+if(_notificationList.isEmpty){
+          CustomNavigator.pop(context);
+        }
         notifyListeners();
       } else {
         _isLoading = false;

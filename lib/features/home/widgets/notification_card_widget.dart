@@ -39,7 +39,7 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               width: 343.w,
-              height: 283.h,
+              // height: 283.h,
               decoration: BoxDecoration(
                 color: AppColors.secondary,
                 borderRadius: BorderRadius.circular(10),
@@ -64,7 +64,7 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               width: 343.w,
-              height: 283.h,
+              // height: 283.h,
               decoration: BoxDecoration(
                 color: AppColors.secondary,
                 borderRadius: BorderRadius.circular(10),

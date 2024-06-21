@@ -30,7 +30,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
           GestureDetector(
               onTap: () async {
                
-                  await notificationProvider.acceptOrder(widget.id , "Accept");
+                  await notificationProvider.acceptOrder(widget.id , "Accept" , context);
                   // notificationProvider.setNotificationList();
               
               },
@@ -50,7 +50,7 @@ class _AcceptRejectWidgetState extends State<AcceptRejectWidget> {
           GestureDetector(
               onTap: () async {
                
-                  await notificationProvider.declineOrder(widget.id);
+                  await notificationProvider.declineOrder(widget.id , context);
                   // notificationProvider.setNotificationList();
 
                   // await notificationProvider.getNotificationData();

@@ -177,7 +177,9 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
           CustomSpacers.height16,
           _buildNameMobileWidget(),
           CustomSpacers.height16,
-          _buildDescriptionWidget(),
+          // _buildDescriptionWidget(),
+          DescriptionWidget(description: data!.Descriptions),
+
           CustomSpacers.height16,
           _buildAdressWidget(),
           CustomSpacers.height24,
@@ -192,9 +194,10 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                    data!.WorkStatus == "Reassigned" ? AcceptRejectWidget(id: data!.ticketId)  : Container(),
 
 
-                _date == data!.date
-                ? _buildButtons()
-                : Container(),
+                // _date == data!.date
+                // ? 
+                _buildButtons()
+                // : Container(),
               ],
             )
           ),
@@ -627,7 +630,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                 if (status == AppLocalizations.of(context)!.start) {
                                   locationService.startLocationService(false);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Start");
+                                      data!.ticketId, "Start" , context);
 
                                   setState(() {
                                     status = AppLocalizations.of(context)!.reached;
@@ -635,7 +638,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                 } else if (status == AppLocalizations.of(context)!.reached) {
                                   locationService.startLocationService(true);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Reached");
+                                      data!.ticketId, "Reached" , context);
                                   setState(() {
                                     status = AppLocalizations.of(context)!.createchecklist;
                                   });
@@ -711,7 +714,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                 } else if (status == AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
                                       .acceptOrder(
-                                          data!.ticketId, "Observation")
+                                          data!.ticketId, "Observation" , context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -743,7 +746,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                   });
                                 } else if (status ==AppLocalizations.of(context)!.completed) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed")
+                                      .acceptOrder(data!.ticketId, "Completed" , context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -797,7 +800,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                               onTap: () async {
                                 if (status == AppLocalizations.of(context)!.start) {
                                   await notificationProvider
-                                      .declineOrder(data!.ticketId);
+                                      .declineOrder(data!.ticketId  ,context);
                                   Navigator.pop(context);
                                 }
 
@@ -838,7 +841,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                   });
                                 } else if (status == AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed")
+                                      .acceptOrder(data!.ticketId, "Completed" , context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -928,5 +931,110 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
         'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
 
     NetworkHelpers.launchUrl(url: googleMapsUrl, errorCallback: () {});
+  }
+}
+
+
+
+
+
+class DescriptionWidget extends StatefulWidget {
+  final String description;
+
+  DescriptionWidget({required this.description});
+
+  @override
+  _DescriptionWidgetState createState() => _DescriptionWidgetState();
+}
+
+class _DescriptionWidgetState extends State<DescriptionWidget> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Container(
+        width: 343.w,
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 218, 218, 218),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppLocalizations.of(context)!.desc,
+                  style: TextStyle(
+                    fontSize: 12.w,
+                    fontWeight: FontWeight.w600,
+                  )),
+              CustomSpacers.height10,
+              Container(
+                width: 295.w,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(5.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          Color.fromARGB(122, 200, 200, 200).withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 1,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.description,
+                        maxLines: isExpanded ? null : 3,
+                        overflow: isExpanded
+                            ? TextOverflow.visible
+                            : TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isExpanded = !isExpanded;
+                          });
+                        },
+                        child: Text(
+                          isExpanded ? "See less" : "See more",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              CustomSpacers.height12
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

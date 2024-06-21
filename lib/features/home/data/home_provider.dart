@@ -108,7 +108,7 @@ class HomeProvider extends ChangeNotifier {
     print(subCategoryId);
     try {
       var headers = {'Content-Type': 'application/json', 'token': jwt_token};
-      Map<String, dynamic> body = {"categoryId": 1, "subCategoryId": 3};
+      Map<String, dynamic> body = {"categoryId": categoryId, "subCategoryId": subCategoryId};
       http.Response response = await http.post(Uri.parse(GETTONS),
           headers: headers, body: jsonEncode(body));
 
@@ -132,18 +132,14 @@ class HomeProvider extends ChangeNotifier {
         _getTonsList = [];
         _isLoading = false;
         notifyListeners();
-        // OverlayManager.showToast(
-        //     type: ToastType.Error, msg: "Something went wrong !");
-
-        // throw data["message"];
+      
       }
     } catch (e) {
       _getTonsList = [];
       _isLoading = false;
       notifyListeners();
       print(e);
-      // OverlayManager.showToast(
-      //     type: ToastType.Error, msg: "Something went wrong !");
+
       throw e;
     }
   }
@@ -156,7 +152,7 @@ class HomeProvider extends ChangeNotifier {
 
     try {
       var headers = {'Content-Type': 'application/json', 'token': jwt_token};
-      Map<String, dynamic> body = {"subSubCatId": 4};
+      Map<String, dynamic> body = {"subSubCatId": subCategoryId};
       http.Response response = await http.post(Uri.parse(GETTONSMODEL),
           headers: headers, body: jsonEncode(body));
 
@@ -257,6 +253,8 @@ class HomeProvider extends ChangeNotifier {
 
   Future<void> getInvoice(int subCategoryId, int ticketId) async {
     _isInvoiceLoading = true;
+    print(subCategoryId);
+    print(ticketId);
 
     notifyListeners();
     String jwt_token = SharedPreferencesManager.getString("jwt_token");

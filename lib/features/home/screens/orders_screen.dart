@@ -46,9 +46,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
       final provider =
           Provider.of<TicketDetailsProvider>(context, listen: false);
       data = provider.TicketDetails[0];
-       updateStatus(data);
+      updateStatus(data);
     });
-   
   }
 
   void updateStatus(TicketDetailsModel? d) {
@@ -62,7 +61,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       status = AppLocalizations.of(context)!.reached;
     }
     if (d.WorkStatus == "Reached") {
-      status =AppLocalizations.of(context)!.createchecklist ;
+      status = AppLocalizations.of(context)!.createchecklist;
     }
 
     if (d.WorkStatus == "Checklist Created") {
@@ -155,8 +154,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   _buildWidget() => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -171,14 +170,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
           CustomSpacers.height16,
           _buildNameMobileWidget(),
           CustomSpacers.height16,
-          _buildDescriptionWidget(),
+          // _buildDescriptionWidget(),
+          DescriptionWidget(description: data!.Descriptions),
           CustomSpacers.height16,
           _buildAdressWidget(),
           CustomSpacers.height24,
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 44.w),
             // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
-            child: widget.arguments["day"] == AppLocalizations.of(context)!.today.toLowerCase()
+            child: widget.arguments["day"] ==
+                    AppLocalizations.of(context)!.today.toLowerCase()
                 ? _buildButtons()
                 : Container(),
           ),
@@ -233,7 +234,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                   child: Padding(
                     padding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 15.h),
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 15.h),
                     child: Text(
                       data!.customerName,
                       style: TextStyle(
@@ -375,8 +376,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ],
                     ),
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 9.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
                       child: Text(
                         data!.Descriptions,
                         style: TextStyle(
@@ -437,8 +438,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ],
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 9.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
                     child: Text(
                       data!.NameOfAddress,
                       style: TextStyle(
@@ -594,11 +595,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       )
                     : Container(),
                 CustomSpacers.height16,
-                
-                        status == AppLocalizations.of(context)!.observation ||
+                status == AppLocalizations.of(context)!.observation ||
                         status == AppLocalizations.of(context)!.start ||
                         status == AppLocalizations.of(context)!.reached ||
-                        status == AppLocalizations.of(context)!.createchecklist ||
+                        status ==
+                            AppLocalizations.of(context)!.createchecklist ||
                         status == AppLocalizations.of(context)!.viewchecklist ||
                         status == AppLocalizations.of(context)!.completed
                     ? Row(
@@ -608,22 +609,28 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           GestureDetector(
                               onTap: () async {
                                 print(status);
-                                if (status == AppLocalizations.of(context)!.start) {
+                                if (status ==
+                                    AppLocalizations.of(context)!.start) {
                                   locationService.startLocationService(false);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Start");
+                                      data!.ticketId, "Start", context);
 
                                   setState(() {
-                                    status = AppLocalizations.of(context)!.reached;
+                                    status =
+                                        AppLocalizations.of(context)!.reached;
                                   });
-                                } else if (status == AppLocalizations.of(context)!.reached) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.reached) {
                                   locationService.startLocationService(true);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Reached");
+                                      data!.ticketId, "Reached", context);
                                   setState(() {
-                                    status = AppLocalizations.of(context)!.createchecklist;
+                                    status = AppLocalizations.of(context)!
+                                        .createchecklist;
                                   });
-                                } else if (status == AppLocalizations.of(context)!.createchecklist) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!
+                                        .createchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.checklist,
                                           arguments: data)
@@ -658,7 +665,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.viewchecklist) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!
+                                        .viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.viewChecklist,
                                           arguments: data)
@@ -692,10 +701,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.observation) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(
-                                          data!.ticketId, "Observation")
+                                      .acceptOrder(data!.ticketId,
+                                          "Observation", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -725,9 +735,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status ==AppLocalizations.of(context)!.completed) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.completed) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed")
+                                      .acceptOrder(
+                                          data!.ticketId, "Completed", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -763,10 +775,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               child: CustomAcceptButtonWidget(
                                 text: status!,
                                 height: 34.h,
-                                width: status == AppLocalizations.of(context)!.start
+                                width: status ==
+                                        AppLocalizations.of(context)!.start
                                     ? 107.w
-                                    : status == AppLocalizations.of(context)!.viewchecklist||
-                                            status == AppLocalizations.of(context)!.observation
+                                    : status ==
+                                                AppLocalizations.of(context)!
+                                                    .viewchecklist ||
+                                            status ==
+                                                AppLocalizations.of(context)!
+                                                    .observation
                                         ? 127.w
                                         : 247.w,
                                 radius: 7.r,
@@ -779,13 +796,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               )),
                           GestureDetector(
                               onTap: () async {
-                                if (status == AppLocalizations.of(context)!.start) {
-                                  await notificationProvider
-                                      .declineOrder(data!.ticketId);
+                                if (status ==
+                                    AppLocalizations.of(context)!.start) {
+                                  await notificationProvider.declineOrder(
+                                      data!.ticketId, context);
                                   Navigator.pop(context);
                                 }
 
-                                if (status == AppLocalizations.of(context)!.viewchecklist) {
+                                if (status ==
+                                    AppLocalizations.of(context)!
+                                        .viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.invoice,
                                           arguments: data)
@@ -820,9 +840,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.observation) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed")
+                                      .acceptOrder(
+                                          data!.ticketId, "Completed", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -854,9 +876,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   });
                                 }
                               },
-                              child: status == AppLocalizations.of(context)!.start
+                              child: status ==
+                                      AppLocalizations.of(context)!.start
                                   ? CustomAcceptButtonWidget(
-                                      text: AppLocalizations.of(context)!.cancel,
+                                      text:
+                                          AppLocalizations.of(context)!.cancel,
                                       height: 34.h,
                                       width: 107.w,
                                       radius: 7.r,
@@ -867,9 +891,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           color: AppColors.secondary),
                                       color: Color.fromARGB(255, 248, 38, 51),
                                     )
-                                  : status == AppLocalizations.of(context)!.viewchecklist
+                                  : status ==
+                                          AppLocalizations.of(context)!
+                                              .viewchecklist
                                       ? CustomAcceptButtonWidget(
-                                          text: AppLocalizations.of(context)!.createinvoice,
+                                          text: AppLocalizations.of(context)!
+                                              .createinvoice,
                                           height: 34.h,
                                           width: 127.w,
                                           radius: 7.r,
@@ -881,9 +908,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           color:
                                               Color.fromARGB(186, 255, 54, 165),
                                         )
-                                      : status == AppLocalizations.of(context)!.observation
+                                      : status ==
+                                              AppLocalizations.of(context)!
+                                                  .observation
                                           ? CustomAcceptButtonWidget(
-                                              text: AppLocalizations.of(context)!.completed,
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .completed,
                                               height: 34.h,
                                               width: 127.w,
                                               radius: 7.r,
@@ -912,5 +943,106 @@ class _OrdersScreenState extends State<OrdersScreen> {
         'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
 
     NetworkHelpers.launchUrl(url: googleMapsUrl, errorCallback: () {});
+  }
+}
+
+class DescriptionWidget extends StatefulWidget {
+  final String description;
+
+  DescriptionWidget({required this.description});
+
+  @override
+  _DescriptionWidgetState createState() => _DescriptionWidgetState();
+}
+
+class _DescriptionWidgetState extends State<DescriptionWidget> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Container(
+        width: 343.w,
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 218, 218, 218),
+              spreadRadius: 3,
+              blurRadius: 3,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppLocalizations.of(context)!.desc,
+                  style: TextStyle(
+                    fontSize: 12.w,
+                    fontWeight: FontWeight.w600,
+                  )),
+              CustomSpacers.height10,
+              Container(
+                width: 295.w,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(5.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          Color.fromARGB(122, 200, 200, 200).withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 1,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.description,
+                        maxLines: isExpanded ? null : 3,
+                        overflow: isExpanded
+                            ? TextOverflow.visible
+                            : TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isExpanded = !isExpanded;
+                          });
+                        },
+                        child: Text(
+                          isExpanded ? "See less" : "See more",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              CustomSpacers.height12
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

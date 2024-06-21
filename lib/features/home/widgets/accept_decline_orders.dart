@@ -87,7 +87,7 @@ class _AcceptRejectOrdersWidgetState extends State<AcceptRejectOrdersWidget> {
                       if (status == "START") {
                         locationService.startLocationService(false);
                         notificationProvider
-                            .acceptOrder(widget.data.ticketId, "Start");
+                            .acceptOrder(widget.data.ticketId, "Start" , context);
                             
                         setState(() {
                           status = "REACHED";
@@ -95,7 +95,7 @@ class _AcceptRejectOrdersWidgetState extends State<AcceptRejectOrdersWidget> {
                       } else if (status == "REACHED") {
                         locationService.startLocationService(true);
                         notificationProvider.acceptOrder(
-                            widget.data.ticketId, "Reached");
+                            widget.data.ticketId, "Reached" , context);
                         setState(() {
                           status = "CREATE CHECKLIST";
                         });
@@ -167,7 +167,7 @@ class _AcceptRejectOrdersWidgetState extends State<AcceptRejectOrdersWidget> {
                     onTap: () async {
                       if (status == "START") {
                         await notificationProvider
-                            .declineOrder(widget.data.ticketId);
+                            .declineOrder(widget.data.ticketId , context);
                         Navigator.pop(context);
                       }
 
