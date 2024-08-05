@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:pick_a_service/core/constants/app_colors.dart';
+import 'package:pick_a_service/core/constants/app_data.dart';
 import 'package:pick_a_service/core/constants/app_icons.dart';
+import 'package:pick_a_service/core/utils/custom_spacers.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
 import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'package:pick_a_service/main.dart';
@@ -19,6 +21,15 @@ class ScheduleHistoryScreenWidget extends StatefulWidget {
 
 class _ScheduleHistoryScreenWidgetState
     extends State<ScheduleHistoryScreenWidget> {
+      late Color customColor;
+      @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    customColor = AppData.hexToColor(widget.data.color);
+  }
+
+    
   @override
   Widget build(BuildContext context) {
     return lang == "en"
@@ -78,7 +89,7 @@ class _ScheduleHistoryScreenWidgetState
         height: 46.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 111, 202, 229),
+          color:customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -127,6 +138,36 @@ class _ScheduleHistoryScreenWidgetState
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+
+            
+              SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -138,16 +179,21 @@ class _ScheduleHistoryScreenWidgetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget(AppLocalizations.of(context)!.orders, widget.data.ticketNo, AppColors.primary),
-            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date, AppColors.primary),
-            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders,
+                widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date,
+                AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time,
+                AppColors.primary),
             widget.data.WorkStatus == "Assigned" ||
                     widget.data.WorkStatus == "Reassigned"
-                ? _buildWidget(AppLocalizations.of(context)!.status, "Pending", Colors.red)
+                ? _buildWidget(
+                    AppLocalizations.of(context)!.status, "Pending", Colors.red)
                 : widget.data.WorkStatus == "Accepted"
-                    ? _buildWidget(AppLocalizations.of(context)!.status, "Accepted", Colors.green)
-                    : _buildWidget(
-                        AppLocalizations.of(context)!.status, widget.data.WorkStatus, AppColors.primary),
+                    ? _buildWidget(AppLocalizations.of(context)!.status,
+                        "Accepted", Colors.green)
+                    : _buildWidget(AppLocalizations.of(context)!.status,
+                        widget.data.WorkStatus, AppColors.primary),
           ],
         ),
       );
@@ -172,7 +218,7 @@ class _ScheduleHistoryScreenWidgetState
         height: 46.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 111, 202, 229),
+          color: customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -221,6 +267,34 @@ class _ScheduleHistoryScreenWidgetState
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+             SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -232,16 +306,21 @@ class _ScheduleHistoryScreenWidgetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _buildWidget(AppLocalizations.of(context)!.orders, widget.data.ticketNo, AppColors.primary),
-            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date, AppColors.primary),
-            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.orders,
+                widget.data.ticketNo, AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.date, widget.data.date,
+                AppColors.primary),
+            _buildWidget(AppLocalizations.of(context)!.time, widget.data.time,
+                AppColors.primary),
             widget.data.WorkStatus == "Assigned" ||
                     widget.data.WorkStatus == "Reassigned"
-                ? _buildWidget(AppLocalizations.of(context)!.status, "Pending", Colors.red)
+                ? _buildWidget(
+                    AppLocalizations.of(context)!.status, "Pending", Colors.red)
                 : widget.data.WorkStatus == "Accepted"
-                    ? _buildWidget(AppLocalizations.of(context)!.status, "Accepted", Colors.green)
-                    : _buildWidget(
-                        AppLocalizations.of(context)!.status, widget.data.WorkStatus, AppColors.primary),
+                    ? _buildWidget(AppLocalizations.of(context)!.status,
+                        "Accepted", Colors.green)
+                    : _buildWidget(AppLocalizations.of(context)!.status,
+                        widget.data.WorkStatus, AppColors.primary),
           ],
         ),
       );

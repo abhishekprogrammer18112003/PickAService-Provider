@@ -83,6 +83,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     );
   }
 
+  
+
   void _navigate(BuildContext context, int index) {
     final provider = Provider.of<ScheduleHistoryProvider>(context , listen : false);
     Navigator.of(context)

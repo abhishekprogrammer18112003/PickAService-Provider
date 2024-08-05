@@ -15,7 +15,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -49,7 +48,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LanguageChangeProvider>(context , listen:  false);
+    final provider =
+        Provider.of<LanguageChangeProvider>(context, listen: false);
     return RefreshIndicator(
       onRefresh: () async {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -104,15 +104,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _navigate(context);
                       },
                       child: CustomContainerWidget(
-                          image: AppIcons.profileData, title: AppLocalizations.of(context)!.personaldata),
+                          image: AppIcons.profileData,
+                          title: AppLocalizations.of(context)!.personaldata),
                     ),
                     CustomSpacers.height16,
                     //DELETE ACCOUNT
-                    CustomContainerWidget(
-                        image: AppIcons.profiledeleteaccount,
-                        title: AppLocalizations.of(context)!.deleteaccount),
+                    // CustomContainerWidget(
+                    //     image: AppIcons.profiledeleteaccount,
+                    //     title: AppLocalizations.of(context)!.deleteaccount),
 
-                    CustomSpacers.height16,
+                    // CustomSpacers.height16,
 
                     //LANGUAGE
                     // CustomContainerWidget(
@@ -187,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : AppColors.secondary)),
                           onTap: () {
                             provider.changeLanguage(Locale('ar'));
-                            
+
                             SharedPreferencesManager.setString("lang", "ar");
                             lang = "ar";
                             setState(() {});
@@ -199,23 +200,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CustomSpacers.height16,
 
                     // //FAQ
-                    // CustomContainerWidget(image: AppIcons.profileFaq, title: "FAQ"),
-                    // CustomSpacers.height16,
+                    CustomContainerWidget(image: AppIcons.profileFaq, title: "FAQ"),
+                    CustomSpacers.height16,
 
                     //CONTACT US
-                    GestureDetector(
-                      onTap: () {
-                        // NetworkHelpers.launchUrl(url: "https://dev.pickaservice.com/", errorCallback: () {
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     // NetworkHelpers.launchUrl(url: "https://dev.pickaservice.com/", errorCallback: () {
 
-                        // });
-                        final url = Uri.parse(" https://pickaservice.com/");
-                        launchUrl(url, mode: LaunchMode.inAppBrowserView);
-                      },
-                      child: CustomContainerWidget(
-                          image: AppIcons.profilecontactus,
-                          title: AppLocalizations.of(context)!.contactus),
-                    ),
-                    CustomSpacers.height16,
+                    //     // });
+                    //     final url = Uri.parse(" https://pickaservice.com/");
+                    //     launchUrl(url, mode: LaunchMode.inAppBrowserView);
+                    //   },
+                    //   child: CustomContainerWidget(
+                    //       image: AppIcons.profilecontactus,
+                    //       title: AppLocalizations.of(context)!.contactus),
+                    // ),
+                    // CustomSpacers.height16,
 
                     //ABOUT
                     GestureDetector(
@@ -236,17 +237,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //LOG OUT
                     GestureDetector(
                       onTap: () {
-                        SharedPreferencesManager.setBool("isLogin", false);
-                        CustomNavigator.pushReplace(context, AppPages.login);
+                        logoutFunc();
                       },
                       child: CustomContainerWidget(
-                          image: AppIcons.profileLogout, title: AppLocalizations.of(context)!.logout),
+                          image: AppIcons.profileLogout,
+                          title: AppLocalizations.of(context)!.logout),
                     ),
                   ]),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void logoutFunc() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to logout?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                SharedPreferencesManager.setBool("isLogin", false);
+                CustomNavigator.pushReplace(
+                    context, AppPages.login); // Dismiss the dialog
+                // Add your logout logic here
+                // For example: Navigator.of(context).pushReplacementNamed('/login');
+              },
+              child: Text('Logout'),
+            ),
+          ],
+        );
+      },
     );
   }
 

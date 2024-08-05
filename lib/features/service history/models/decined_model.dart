@@ -1,13 +1,5 @@
-class CompletedTasksModel {
-  CompletedTasksModel({
-    required this.date,
-    required this.time,
-    required this.ticketId,
-    required this.scheduledDate,
-    required this.createdDate,
-    required this.categoryId,
-    required this.subcategoryId,
-    required this.customerId,
+class DeclineModel {
+  DeclineModel({
     required this.id,
     required this.ticketNo,
     required this.ticketSmsCode,
@@ -27,38 +19,27 @@ class CompletedTasksModel {
     required this.checklistUserTicketId,
     required this.invoiceId,
     required this.createdDateTime,
-    required this.Id,
+    required this.ticketId,
+    required this.technicianId,
+    required this.customerId,
+    required this.userType,
+    required this.action,
+    required this.ticketStatus,
+    required this.createdDate,
+    required this.createdBy,
+    required this.customerName,
+    required this.customerMail,
     required this.CategoryNameEn,
     required this.CategoryNameAr,
-    required this.Code,
     required this.img,
+    required this.categoryCode,
     required this.color,
-    required this.CreatedUserType,
     required this.SubCategoryNameEn,
     required this.SubCategoryNameAr,
-    required this.imgUrl,
-    required this.SubCategoryParentID,
-    required this.Fullname,
-    required this.PhoneNo,
-    required this.NameOfAddress,
-    required this.Area,
-    required this.Block,
-    required this.Street,
-    required this.Building,
-    required this.Floor,
-    required this.FlatsNo,
-    required this.BuildingType,
-    required this.Latitude,
-    required this.Longitude,
+    required this.subCategoryCode,
+    required this.bookedDate,
+    required this.bookedTime,
   });
-  late final String date;
-  late final String time;
-  late final int ticketId;
-  late final String scheduledDate;
-  late final String createdDate;
-  late final int categoryId;
-  late final int subcategoryId;
-  late final int customerId;
   late final int id;
   late final String ticketNo;
   late final String ticketSmsCode;
@@ -78,39 +59,28 @@ class CompletedTasksModel {
   late final int checklistUserTicketId;
   late final int invoiceId;
   late final String createdDateTime;
-  late final int Id;
+  late final int ticketId;
+  late final int technicianId;
+  late final int customerId;
+  late final String userType;
+  late final String action;
+  late final String ticketStatus;
+  late final String createdDate;
+  late final int createdBy;
+  late final String customerName;
+  late final String customerMail;
   late final String CategoryNameEn;
   late final String CategoryNameAr;
-  late final String Code;
   late final String img;
+  late final String categoryCode;
   late final String color;
-  late final String CreatedUserType;
   late final String SubCategoryNameEn;
   late final String SubCategoryNameAr;
-  late final String imgUrl;
-  late final int SubCategoryParentID;
-  late final String Fullname;
-  late final String PhoneNo;
-  late final String NameOfAddress;
-  late final String Area;
-  late final String Block;
-  late final String Street;
-  late final String Building;
-  late final String Floor;
-  late final String FlatsNo;
-  late final String BuildingType;
-  late final double Latitude;
-  late final double Longitude;
+  late final String subCategoryCode;
+  late final String bookedDate;
+  late final String bookedTime;
   
-  CompletedTasksModel.fromJson(Map<String, dynamic> json){
-    date = json['date'];
-    time = json['time'];
-    ticketId = json['ticket_id'];
-    scheduledDate = json['scheduled_date'];
-    createdDate = json['created_date'];
-    categoryId = json['category_id'];
-    subcategoryId = json['subcategory_id'];
-    customerId = json['customer_id'];
+  DeclineModel.fromJson(Map<String, dynamic> json){
     id = json['id'];
     ticketNo = json['ticket_no'];
     ticketSmsCode = json['ticket_sms_code'];
@@ -130,41 +100,30 @@ class CompletedTasksModel {
     checklistUserTicketId = json['checklist_user_ticketId'];
     invoiceId = json['invoiceId'];
     createdDateTime = json['created_dateTime'];
-    Id = json['Id'];
+    ticketId = json['ticket_id'];
+    technicianId = json['technician_id'];
+    customerId = json['customer_id'];
+    userType = json['user_type'];
+    action = json['action'];
+    ticketStatus = json['ticket_status'];
+    createdDate = json['created_date'];
+    createdBy = json['created_by'];
+    customerName = json['customer_name'];
+    customerMail = json['customer_mail'];
     CategoryNameEn = json['CategoryNameEn'];
     CategoryNameAr = json['CategoryNameAr'];
-    Code = json['Code'];
     img = json['img'];
+    categoryCode = json['categoryCode'];
     color = json['color'];
-    CreatedUserType = json['CreatedUserType'];
     SubCategoryNameEn = json['SubCategoryNameEn'];
     SubCategoryNameAr = json['SubCategoryNameAr'];
-    imgUrl = json['img_url'];
-    SubCategoryParentID = json['SubCategoryParentID'];
-    Fullname = json['Fullname'];
-    PhoneNo = json['PhoneNo'];
-    NameOfAddress = json['NameOfAddress'];
-    Area = json['Area'];
-    Block = json['Block'];
-    Street = json['Street'];
-    Building = json['Building'];
-    Floor = json['Floor'];
-    FlatsNo = json['FlatsNo'];
-    BuildingType = json['BuildingType'];
-    Latitude = json['Latitude'];
-    Longitude = json['Longitude'];
+    subCategoryCode = json['subCategoryCode'];
+    bookedDate = json['bookedDate'];
+    bookedTime = json['bookedTime'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['date'] = date;
-    _data['time'] = time;
-    _data['ticket_id'] = ticketId;
-    _data['scheduled_date'] = scheduledDate;
-    _data['created_date'] = createdDate;
-    _data['category_id'] = categoryId;
-    _data['subcategory_id'] = subcategoryId;
-    _data['customer_id'] = customerId;
     _data['id'] = id;
     _data['ticket_no'] = ticketNo;
     _data['ticket_sms_code'] = ticketSmsCode;
@@ -184,29 +143,26 @@ class CompletedTasksModel {
     _data['checklist_user_ticketId'] = checklistUserTicketId;
     _data['invoiceId'] = invoiceId;
     _data['created_dateTime'] = createdDateTime;
-    _data['Id'] = Id;
+    _data['ticket_id'] = ticketId;
+    _data['technician_id'] = technicianId;
+    _data['customer_id'] = customerId;
+    _data['user_type'] = userType;
+    _data['action'] = action;
+    _data['ticket_status'] = ticketStatus;
+    _data['created_date'] = createdDate;
+    _data['created_by'] = createdBy;
+    _data['customer_name'] = customerName;
+    _data['customer_mail'] = customerMail;
     _data['CategoryNameEn'] = CategoryNameEn;
     _data['CategoryNameAr'] = CategoryNameAr;
-    _data['Code'] = Code;
     _data['img'] = img;
+    _data['categoryCode'] = categoryCode;
     _data['color'] = color;
-    _data['CreatedUserType'] = CreatedUserType;
     _data['SubCategoryNameEn'] = SubCategoryNameEn;
     _data['SubCategoryNameAr'] = SubCategoryNameAr;
-    _data['img_url'] = imgUrl;
-    _data['SubCategoryParentID'] = SubCategoryParentID;
-    _data['Fullname'] = Fullname;
-    _data['PhoneNo'] = PhoneNo;
-    _data['NameOfAddress'] = NameOfAddress;
-    _data['Area'] = Area;
-    _data['Block'] = Block;
-    _data['Street'] = Street;
-    _data['Building'] = Building;
-    _data['Floor'] = Floor;
-    _data['FlatsNo'] = FlatsNo;
-    _data['BuildingType'] = BuildingType;
-    _data['Latitude'] = Latitude;
-    _data['Longitude'] = Longitude;
+    _data['subCategoryCode'] = subCategoryCode;
+    _data['bookedDate'] = bookedDate;
+    _data['bookedTime'] = bookedTime;
     return _data;
   }
 }

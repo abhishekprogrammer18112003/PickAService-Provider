@@ -65,6 +65,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   dropdown_search: ^5.0.6
+  background_location: ^0.13.0
+  flutter_background_service_android :
+
 
   
 

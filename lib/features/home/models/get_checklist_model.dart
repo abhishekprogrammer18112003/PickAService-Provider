@@ -15,7 +15,6 @@
     required this.createdBy,
     required this.Id,
     required this.CategoryId,
-    required this.Code,
     required this.SubCategoryNameEn,
     required this.SubCategoryNameAr,
     required this.Status,
@@ -39,7 +38,6 @@
   late final int createdBy;
   late final int Id;
   late final int CategoryId;
-  late final String Code;
   late final String SubCategoryNameEn;
   late final String SubCategoryNameAr;
   late final String Status;
@@ -64,7 +62,6 @@
     createdBy = json['createdBy'];
     Id = json['Id'];
     CategoryId = json['CategoryId'];
-    Code = json['Code'];
     SubCategoryNameEn = json['SubCategoryNameEn'];
     SubCategoryNameAr = json['SubCategoryNameAr'];
     Status = json['Status'];
@@ -91,7 +88,6 @@
     _data['createdBy'] = createdBy;
     _data['Id'] = Id;
     _data['CategoryId'] = CategoryId;
-    _data['Code'] = Code;
     _data['SubCategoryNameEn'] = SubCategoryNameEn;
     _data['SubCategoryNameAr'] = SubCategoryNameAr;
     _data['Status'] = Status;

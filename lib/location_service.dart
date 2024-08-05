@@ -7,6 +7,7 @@ import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationService {
+  
   Timer? _timer;
   Future<void> startLocationService(bool check) async {
     // Check and request location permission if not granted
@@ -23,7 +24,7 @@ class LocationService {
   Future<void> _getLocationUpdates() async {
     _getCurrentLocation();
 
-    _timer = Timer.periodic(Duration(minutes: 15), (timer) async {
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) async {
       print("10minutes");
       _getCurrentLocation();
     });
@@ -61,7 +62,7 @@ class LocationServiceProvider extends ChangeNotifier {
     int techId = SharedPreferencesManager.getInt("user_id");
     String jwt_token = SharedPreferencesManager.getString("jwt_token");
 
-
+print("Location sending to backend ");
     print(position.latitude);
     print(position.longitude);
 

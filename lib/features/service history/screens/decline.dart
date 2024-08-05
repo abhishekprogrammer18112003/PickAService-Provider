@@ -5,8 +5,10 @@ import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/features/home/data/home_provider.dart';
 import 'package:pick_a_service/features/home/screens/orders_screen.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
+import 'package:pick_a_service/features/service%20history/models/decined_model.dart';
 import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'package:pick_a_service/features/service%20history/screens/pending_orders_details_screen.dart';
+import 'package:pick_a_service/features/service%20history/widgets/declined_orders_widget.dart';
 import 'package:pick_a_service/features/service%20history/widgets/schedule_history_screen_widget.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
@@ -16,7 +18,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeclineScreen extends StatefulWidget {
   String title;
-  List<ScheduleHistoryModel> data;
+  List<DeclineModel> data;
   DeclineScreen({super.key, required this.data, required this.title});
 
   @override
@@ -31,11 +33,11 @@ class _DeclineScreenState extends State<DeclineScreen> {
     return RefreshIndicator(
       color: Colors.blue,
       onRefresh: () async {
-        await provider.getUpcomingTicketsData(context);
+        await provider.declinedTask();
         // await provider.completeTask();
       },
       child: !provider.isUpcomingLoading
-          ? !provider.upcomingTickets.isEmpty
+          ? !provider.declinedList.isEmpty
               ? ListView.builder(
                   itemCount: widget.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -60,7 +62,7 @@ class _DeclineScreenState extends State<DeclineScreen> {
                         //   },
                         // );
 
-                        _navigate(context, index);
+                              _navigate(context, index);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -69,7 +71,7 @@ class _DeclineScreenState extends State<DeclineScreen> {
                                   0.5) // Change to the desired color
                               : Colors.transparent,
                         ),
-                        child: ScheduleHistoryScreenWidget(
+                        child: DeclinedOrdersScreenWidget(
                           data: widget.data[index],
                         ),
                       ),

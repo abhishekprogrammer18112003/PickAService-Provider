@@ -27,11 +27,13 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
   //     date = "",
   //     time = "",
   //     ticketNo = "";
+  late Color customColor;
   @override
   void initState() {
     super.initState();
 
-    rgba = AppData.hexToRgba(widget.data.color);
+    // rgba = AppData.hexToRgba(widget.data.color);
+    customColor = AppData.hexToColor(widget.data.color);
     print("Language");
     print(lang);
   }
@@ -93,7 +95,7 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
         height: 46.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 111, 202, 229),
+          color: customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -167,19 +169,47 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
-
-              Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10.r)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      widget.data.WorkStatus,
+              SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
                       style: TextStyle(
-                          color: AppColors.black, fontWeight: FontWeight.w500),
-                    ),
-                  ))
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+
+              // Container(
+              //     decoration: BoxDecoration(
+              //         color: AppColors.white,
+              //         borderRadius: BorderRadius.circular(10.r)),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(4.0),
+              //       child: Text(
+              //         widget.data.WorkStatus,
+              //         style: TextStyle(
+              //             color: AppColors.black, fontWeight: FontWeight.w500),
+              //       ),
+              //     ))
             ],
           ),
         ),
@@ -195,6 +225,7 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
                 AppLocalizations.of(context)!.orders, widget.data.ticketNo),
             _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
             _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
+            _buildWidget(AppLocalizations.of(context)!.status, widget.data.WorkStatus),
           ],
         ),
       );
@@ -209,7 +240,7 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
           ),
           Text(
             subtitle,
-            style: TextStyle(fontSize: 12.h, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 12.h, fontWeight: FontWeight.w400),
           )
         ],
       );
@@ -218,7 +249,7 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
         height: 46.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 111, 202, 229),
+          color: customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -293,18 +324,47 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
               //   color: AppColors.secondary,
               // )
 
-              Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10.r)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      widget.data.WorkStatus,
+              SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
                       style: TextStyle(
-                          color: AppColors.black, fontWeight: FontWeight.w500),
-                    ),
-                  ))
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              )
+
+              // Container(
+              //     decoration: BoxDecoration(
+              //         color: AppColors.white,
+              //         borderRadius: BorderRadius.circular(10.r)),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(4.0),
+              //       child: Text(
+              //         widget.data.WorkStatus,
+              //         style: TextStyle(
+              //             color: AppColors.black, fontWeight: FontWeight.w500),
+              //       ),
+              //     ))
             ],
           ),
         ),
@@ -320,6 +380,8 @@ class _OrdersWidgetMainState extends State<OrdersWidgetMain> {
                 AppLocalizations.of(context)!.orders, widget.data.ticketNo),
             _buildWidget(AppLocalizations.of(context)!.date, widget.data.date),
             _buildWidget(AppLocalizations.of(context)!.time, widget.data.time),
+                        _buildWidget(AppLocalizations.of(context)!.status, widget.data.WorkStatus),
+
           ],
         ),
       );

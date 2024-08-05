@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pick_a_service/core/app_imports.dart';
+import 'package:pick_a_service/core/constants/app_data.dart';
 import 'package:pick_a_service/core/loaded_widget.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/features/home/models/accepted_models.dart';
@@ -108,7 +109,10 @@ class HomeProvider extends ChangeNotifier {
     print(subCategoryId);
     try {
       var headers = {'Content-Type': 'application/json', 'token': jwt_token};
-      Map<String, dynamic> body = {"categoryId": categoryId, "subCategoryId": subCategoryId};
+      Map<String, dynamic> body = {
+        "categoryId": categoryId,
+        "subCategoryId": subCategoryId
+      };
       http.Response response = await http.post(Uri.parse(GETTONS),
           headers: headers, body: jsonEncode(body));
 
@@ -132,7 +136,6 @@ class HomeProvider extends ChangeNotifier {
         _getTonsList = [];
         _isLoading = false;
         notifyListeners();
-      
       }
     } catch (e) {
       _getTonsList = [];
@@ -195,13 +198,8 @@ class HomeProvider extends ChangeNotifier {
 
   bool get isSaving => _isSaving;
 
-  Future<void> createChecklist(
-      int ticketId,
-      int userId,
-      int subcategoryId,
-      int modelID,
-      BuildContext context,
-      String image) async {
+  Future<void> createChecklist(int ticketId, int userId, int subcategoryId,
+      int modelID, BuildContext context, String image) async {
     int techId = SharedPreferencesManager.getInt("user_id");
     _isSaving = true;
 
@@ -431,6 +429,8 @@ class HomeProvider extends ChangeNotifier {
 
   Future<void> getChecklistData(int checklistId, BuildContext context) async {
     _isGettingChecklist = true;
+    print("==========checklist id ==============");
+    print(checklistId);
 
     notifyListeners();
     String jwt_token = SharedPreferencesManager.getString("jwt_token");
@@ -452,6 +452,8 @@ class HomeProvider extends ChangeNotifier {
           list.add(_model);
         }
         _getChecklistModel = list;
+
+        print(_getChecklistModel);
         _isGettingChecklist = false;
 
         notifyListeners();
@@ -570,8 +572,7 @@ class HomeProvider extends ChangeNotifier {
       http.Response response = await http.post(Uri.parse(OFFLINEPAYMENT),
           headers: headers, body: jsonEncode(body));
 
-
-          print("===========body==========");
+      print("===========body==========");
       print(jsonEncode(body));
       var data = jsonDecode(response.body);
 
@@ -589,8 +590,43 @@ class HomeProvider extends ChangeNotifier {
       _isPayment = false;
       notifyListeners();
       print(e);
-      // OverlayManager.showToast(
-      // type: ToastType.Error, msg: "Something went wrong !");
+      throw e;
+    }
+  }
+
+  //==========SEND TRACKING LINK ========================
+  bool _isTrack = false;
+  bool get isTrack => _isTrack;
+  Future<void> sendTrack(BuildContext context, int custID, int ticketId) async {
+    _isTrack = true;
+    notifyListeners();
+    print(custID);
+    print(ticketId);
+    int techId = SharedPreferencesManager.getInt("user_id");
+    String jwt_token = SharedPreferencesManager.getString("jwt_token");
+
+    try {
+      var headers = {'Content-Type': 'application/json', 'token': jwt_token};
+      Map<String, dynamic> body = {
+        "customerId": custID,
+        "technicianId": techId,
+        "ticketId": ticketId
+      };
+      http.Response response = await http.post(Uri.parse(SENDTRACKINGLINK),
+          headers: headers, body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        OverlayManager.showToast(type: ToastType.Success , msg: "Succesfully send the tracking link");
+        print("success");
+        _isTrack = false;
+        notifyListeners();
+      } else {
+        _isTrack = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      _isTrack = false;
+      notifyListeners();
       throw e;
     }
   }

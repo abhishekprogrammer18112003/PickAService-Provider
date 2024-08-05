@@ -37,6 +37,8 @@ class TicketDetailsModel {
     required this.Latitude,
     required this.Longitude,
     required this.addressId,
+    required this.subcategorymodelId,
+    required this.subcategorymodelName,
   });
   late final int ticketId;
   late final int CustomerId;
@@ -75,6 +77,8 @@ class TicketDetailsModel {
   late final double Latitude;
   late final double Longitude;
   late final int addressId;
+  late final int subcategorymodelId;
+  late final String subcategorymodelName;
   
   TicketDetailsModel.fromJson(Map<String, dynamic> json){
     ticketId = json['ticket_id'];
@@ -114,6 +118,8 @@ class TicketDetailsModel {
     Latitude = json['Latitude'];
     Longitude = json['Longitude'];
     addressId = json['address_id'];
+    subcategorymodelId = json['subcategorymodelId'];
+    subcategorymodelName = json['subcategorymodel_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -155,6 +161,8 @@ class TicketDetailsModel {
     _data['Latitude'] = Latitude;
     _data['Longitude'] = Longitude;
     _data['address_id'] = addressId;
+    _data['subcategorymodelId'] = subcategorymodelId;
+    _data['subcategorymodel_name'] = subcategorymodelName;
     return _data;
   }
 }

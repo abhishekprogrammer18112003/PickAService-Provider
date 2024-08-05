@@ -36,6 +36,9 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
           .getUpcomingTicketsData(context);
      await Provider.of<ScheduleHistoryProvider>(context, listen: false)
           .completeTask("Completed"); 
+
+      await Provider.of<ScheduleHistoryProvider>(context, listen: false)
+          .declinedTask(); 
     });
   }
 
@@ -158,7 +161,7 @@ class _ServiceHistoryScreenState extends State<ServiceHistoryScreen> {
               children: [
                 UpcomingScreen(data: value.upcomingTickets  , title: AppLocalizations.of(context)!.upcoming,),
                 CompletedScreen(data: value.completeTaskList , title: AppLocalizations.of(context)!.completed,),
-                DeclineScreen(data : value.upcomingTickets , title : AppLocalizations.of(context)!.decline),
+                DeclineScreen(data : value.declinedList , title : AppLocalizations.of(context)!.decline),
               ],
             );
           },

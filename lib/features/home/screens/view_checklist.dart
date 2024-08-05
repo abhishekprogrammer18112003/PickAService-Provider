@@ -197,8 +197,10 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
                     color: AppColors.black)),
             CustomSpacers.height10,
             TextField(
+              readOnly: true,
               decoration: InputDecoration(
                 // labelText: "Search",
+                
                 hintText: a.SubCategoryNameEn,
                 hintMaxLines: 2,
                 hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
@@ -222,6 +224,7 @@ class _ViewCheckListScreenState extends State<ViewCheckListScreen> {
             CustomSpacers.height10,
 
             TextField(
+              readOnly:  true,
               decoration: InputDecoration(
                 // labelText: "Search",
                 hintText: a.modelName,

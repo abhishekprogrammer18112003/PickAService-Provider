@@ -7,6 +7,7 @@ import 'package:pick_a_service/core/constants/app_icons.dart';
 import 'package:pick_a_service/core/helpers/network_helpers.dart';
 import 'package:pick_a_service/core/utils/custom_spacers.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
+import 'package:pick_a_service/features/home/data/home_provider.dart';
 import 'package:pick_a_service/features/home/data/notification_provider.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/features/service%20history/widgets/history_accept_reject_widget.dart';
@@ -24,13 +25,16 @@ class PendingOrdersDetailsScreen extends StatefulWidget {
   Map<String, dynamic> arguments;
   // AcceptedOrdersModel data;
   int ticketId;
-  PendingOrdersDetailsScreen({super.key, required this.ticketId, required this.arguments});
+  PendingOrdersDetailsScreen(
+      {super.key, required this.ticketId, required this.arguments});
 
   @override
-  State<PendingOrdersDetailsScreen> createState() => _PendingOrdersDetailsScreenState();
+  State<PendingOrdersDetailsScreen> createState() =>
+      _PendingOrdersDetailsScreenState();
 }
 
-class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen> {
+class _PendingOrdersDetailsScreenState
+    extends State<PendingOrdersDetailsScreen> {
   TicketDetailsModel? data;
 
   String? status;
@@ -45,16 +49,15 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
       final provider =
           Provider.of<TicketDetailsProvider>(context, listen: false);
       data = provider.TicketDetails[0];
-       updateStatus(data);
+      updateStatus(data);
     });
- DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
 
     // Format the date in "dd.mm.yyyy" format
     String formattedDate = DateFormat('dd.MM.yyyy').format(now);
     setState(() {
       _date = formattedDate;
     });
-   
   }
 
   void updateStatus(TicketDetailsModel? d) {
@@ -68,7 +71,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
       status = AppLocalizations.of(context)!.reached;
     }
     if (d.WorkStatus == "Reached") {
-      status =AppLocalizations.of(context)!.createchecklist ;
+      status = AppLocalizations.of(context)!.createchecklist;
     }
 
     if (d.WorkStatus == "Checklist Created") {
@@ -89,6 +92,9 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
     }
     setState(() {
       print("=======status======");
+      if(status == null){
+        status = AppLocalizations.of(context)!.decline;
+      }
       print(status);
     });
   }
@@ -161,8 +167,8 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
   }
 
   _buildWidget() => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -184,26 +190,59 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
           _buildAdressWidget(),
           CustomSpacers.height24,
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 44.w),
+              padding: EdgeInsets.symmetric(horizontal: 44.w),
 
-            // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
-            child: Column(
-              children: [
+              // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
+              child: Column(
+                children: [
+                   data!.date == _date  &&  widget.arguments['day'] != "Decline" ?   _buildSendTrackingLink() : Container(),
+                  CustomSpacers.height10,
+                  data!.WorkStatus == "Assigned" ||
+                          data!.WorkStatus == "Reassigned"
+                      ? AcceptRejectWidget(id: data!.ticketId)
+                      : Container(),
 
-                data!.WorkStatus == "Assigned" ||
-                   data!.WorkStatus == "Reassigned" ? AcceptRejectWidget(id: data!.ticketId)  : Container(),
-
-
-                // _date == data!.date
-                // ? 
-                _buildButtons()
-                // : Container(),
-              ],
-            )
-          ),
+                  // _date == data!.date
+CustomSpacers.height10,
+                
+                  // ?
+                  data!.date == _date &&  widget.arguments['day'] != "Decline" ? _buildButtons() 
+                  : Container(),
+                ],
+              )),
           CustomSpacers.height32,
         ],
       );
+
+  _buildSendTrackingLink() {
+    final p = Provider.of<HomeProvider>(context, listen: false);
+    return GestureDetector(
+      onTap: () {
+        p.sendTrack(context, data!.CustomerId, data!.ticketId);
+      },
+      child: Consumer<HomeProvider>(
+        builder: (context, value, child) => !value.isTrack
+            ? Center(
+                child: CustomAcceptButtonWidget(
+                  text: "send Tracking link",
+                  height: 34.h,
+                  width: 250.w,
+                  radius: 7.r,
+                  image: AppIcons.profileFaq,
+                  style: TextStyle(
+                      fontSize: 10.w,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondary),
+                  color: Color.fromARGB(255, 0, 184, 169),
+                ),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
+
   _buildNameMobileWidget() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
@@ -252,7 +291,7 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                   ),
                   child: Padding(
                     padding:
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 15.h),
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 15.h),
                     child: Text(
                       data!.customerName,
                       style: TextStyle(
@@ -394,8 +433,8 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                       ],
                     ),
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 9.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
                       child: Text(
                         data!.Descriptions,
                         style: TextStyle(
@@ -456,8 +495,8 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                     ],
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 9.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 9.h),
                     child: Text(
                       data!.NameOfAddress,
                       style: TextStyle(
@@ -613,11 +652,11 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                       )
                     : Container(),
                 CustomSpacers.height16,
-                
-                        status == AppLocalizations.of(context)!.observation ||
+                status == AppLocalizations.of(context)!.observation ||
                         status == AppLocalizations.of(context)!.start ||
                         status == AppLocalizations.of(context)!.reached ||
-                        status == AppLocalizations.of(context)!.createchecklist ||
+                        status ==
+                            AppLocalizations.of(context)!.createchecklist ||
                         status == AppLocalizations.of(context)!.viewchecklist ||
                         status == AppLocalizations.of(context)!.completed
                     ? Row(
@@ -627,22 +666,28 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                           GestureDetector(
                               onTap: () async {
                                 print(status);
-                                if (status == AppLocalizations.of(context)!.start) {
+                                if (status ==
+                                    AppLocalizations.of(context)!.start) {
                                   locationService.startLocationService(false);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Start" , context);
+                                      data!.ticketId, "Start", context);
 
                                   setState(() {
-                                    status = AppLocalizations.of(context)!.reached;
+                                    status =
+                                        AppLocalizations.of(context)!.reached;
                                   });
-                                } else if (status == AppLocalizations.of(context)!.reached) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.reached) {
                                   locationService.startLocationService(true);
                                   notificationProvider.acceptOrder(
-                                      data!.ticketId, "Reached" , context);
+                                      data!.ticketId, "Reached", context);
                                   setState(() {
-                                    status = AppLocalizations.of(context)!.createchecklist;
+                                    status = AppLocalizations.of(context)!
+                                        .createchecklist;
                                   });
-                                } else if (status == AppLocalizations.of(context)!.createchecklist) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!
+                                        .createchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.checklist,
                                           arguments: data)
@@ -677,7 +722,9 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.viewchecklist) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!
+                                        .viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.viewChecklist,
                                           arguments: data)
@@ -711,10 +758,11 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.observation) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(
-                                          data!.ticketId, "Observation" , context)
+                                      .acceptOrder(data!.ticketId,
+                                          "Observation", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -744,9 +792,11 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status ==AppLocalizations.of(context)!.completed) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.completed) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed" , context)
+                                      .acceptOrder(
+                                          data!.ticketId, "Completed", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -782,10 +832,15 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                               child: CustomAcceptButtonWidget(
                                 text: status!,
                                 height: 34.h,
-                                width: status == AppLocalizations.of(context)!.start
+                                width: status ==
+                                        AppLocalizations.of(context)!.start
                                     ? 107.w
-                                    : status == AppLocalizations.of(context)!.viewchecklist||
-                                            status == AppLocalizations.of(context)!.observation
+                                    : status ==
+                                                AppLocalizations.of(context)!
+                                                    .viewchecklist ||
+                                            status ==
+                                                AppLocalizations.of(context)!
+                                                    .observation
                                         ? 127.w
                                         : 247.w,
                                 radius: 7.r,
@@ -798,13 +853,16 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                               )),
                           GestureDetector(
                               onTap: () async {
-                                if (status == AppLocalizations.of(context)!.start) {
-                                  await notificationProvider
-                                      .declineOrder(data!.ticketId  ,context);
+                                if (status ==
+                                    AppLocalizations.of(context)!.start) {
+                                  await notificationProvider.declineOrder(
+                                      data!.ticketId, context);
                                   Navigator.pop(context);
                                 }
 
-                                if (status == AppLocalizations.of(context)!.viewchecklist) {
+                                if (status ==
+                                    AppLocalizations.of(context)!
+                                        .viewchecklist) {
                                   CustomNavigator.pushTo(
                                           context, AppPages.invoice,
                                           arguments: data)
@@ -839,9 +897,11 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                       updateStatus(data);
                                     });
                                   });
-                                } else if (status == AppLocalizations.of(context)!.observation) {
+                                } else if (status ==
+                                    AppLocalizations.of(context)!.observation) {
                                   await notificationProvider
-                                      .acceptOrder(data!.ticketId, "Completed" , context)
+                                      .acceptOrder(
+                                          data!.ticketId, "Completed", context)
                                       .then((v) async {
                                     await provider.getTicketData(
                                         context, widget.ticketId);
@@ -873,9 +933,11 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                   });
                                 }
                               },
-                              child: status == AppLocalizations.of(context)!.start
+                              child: status ==
+                                      AppLocalizations.of(context)!.start
                                   ? CustomAcceptButtonWidget(
-                                      text: AppLocalizations.of(context)!.cancel,
+                                      text:
+                                          AppLocalizations.of(context)!.cancel,
                                       height: 34.h,
                                       width: 107.w,
                                       radius: 7.r,
@@ -886,9 +948,12 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                           color: AppColors.secondary),
                                       color: Color.fromARGB(255, 248, 38, 51),
                                     )
-                                  : status == AppLocalizations.of(context)!.viewchecklist
+                                  : status ==
+                                          AppLocalizations.of(context)!
+                                              .viewchecklist
                                       ? CustomAcceptButtonWidget(
-                                          text: AppLocalizations.of(context)!.createinvoice,
+                                          text: AppLocalizations.of(context)!
+                                              .createinvoice,
                                           height: 34.h,
                                           width: 127.w,
                                           radius: 7.r,
@@ -900,9 +965,13 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
                                           color:
                                               Color.fromARGB(186, 255, 54, 165),
                                         )
-                                      : status == AppLocalizations.of(context)!.observation
+                                      : status ==
+                                              AppLocalizations.of(context)!
+                                                  .observation
                                           ? CustomAcceptButtonWidget(
-                                              text: AppLocalizations.of(context)!.completed,
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .completed,
                                               height: 34.h,
                                               width: 127.w,
                                               radius: 7.r,
@@ -933,10 +1002,6 @@ class _PendingOrdersDetailsScreenState extends State<PendingOrdersDetailsScreen>
     NetworkHelpers.launchUrl(url: googleMapsUrl, errorCallback: () {});
   }
 }
-
-
-
-
 
 class DescriptionWidget extends StatefulWidget {
   final String description;

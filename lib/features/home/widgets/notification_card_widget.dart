@@ -24,12 +24,13 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
   List<int> rgba = [];
   String date = "";
   String time = "";
+  late Color customColor;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    rgba = AppData.hexToRgba(widget.data.color);
+    customColor = AppData.hexToColor(widget.data.color);
   }
 
   @override
@@ -91,7 +92,7 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
         height: 60.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, rgba[0], rgba[1], rgba[2]),
+          color: customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -138,6 +139,34 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+              SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -157,6 +186,8 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
                     AppLocalizations.of(context)!.date, widget.data.date),
                 _buildWidget(
                     AppLocalizations.of(context)!.time, widget.data.time),
+                _buildWidget(
+                    AppLocalizations.of(context)!.status, widget.data.WorkStatus),
               ],
             ),
             CustomSpacers.height16,
@@ -219,7 +250,7 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
         height: 60.h,
         width: 343.w,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, rgba[0], rgba[1], rgba[2]),
+          color: customColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r)),
         ),
@@ -266,6 +297,34 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
               //   Icons.more_vert,
               //   color: AppColors.secondary,
               // )
+              SizedBox(
+                child: Row(
+                  children: [
+                    widget.data.Priority == "top"
+                        ? Icon(
+                            Icons.arrow_circle_up_outlined,
+                            color: Colors.green,
+                          )
+                        : widget.data.Priority == "medium"
+                            ? Icon(
+                                Icons.compare_arrows_outlined,
+                                color: Colors.orange,
+                              )
+                            : Icon(
+                                Icons.arrow_circle_down_outlined,
+                                color: Colors.red,
+                              ),
+                    CustomSpacers.width8,
+                    Text(
+                      widget.data.Priority,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -285,6 +344,8 @@ class _NotificationCardWidgetState extends State<NotificationCardWidget> {
                     AppLocalizations.of(context)!.date, widget.data.date),
                 _buildWidget(
                     AppLocalizations.of(context)!.time, widget.data.time),
+                _buildWidget(
+                    AppLocalizations.of(context)!.status, widget.data.WorkStatus),
               ],
             ),
             CustomSpacers.height16,

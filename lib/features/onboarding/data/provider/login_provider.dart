@@ -103,4 +103,42 @@ class LoginProvider extends ChangeNotifier {
       ),
     );
   }
+
+
+
+
+
+  int _isActive = 1;
+  int get isActive => _isActive;
+
+  Future<void> getTechnicianActivation(
+      String email) async {
+
+   
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      Map<String, dynamic> body = {
+        "email": email,
+       
+      };
+      http.Response response = await http.post(Uri.parse(TECHNICIANACTIVATION),
+          headers: headers, body: jsonEncode(body));
+
+      // print(response);
+      var data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        _isActive = data['isActive'];
+        notifyListeners();
+        
+      } else {
+       
+        // OverlayManager.showToast(type: ToastType.Error, msg: data["message"]);
+        throw data["message"];
+      }
+    } catch (e) {
+      // OverlayManager.showToast(type: ToastType.Error, msg: e.toString());s
+      throw e;
+    }
+  }
 }

@@ -35,7 +35,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<HomeProvider>(context, listen: false)
-          .getInvoice(widget.arguments.SubCategoryId, widget.arguments.ticketId);
+          .getInvoice(widget.arguments.subcategorymodelId , widget.arguments.ticketId);
 
       await Provider.of<HomeProvider>(context, listen: false)
           .getFilteredInvoice("", widget.arguments.ticketId);
