@@ -2,6 +2,7 @@ import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/core/loaded_widget.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/features/service%20history/models/completed_task.dart';
+import 'package:pick_a_service/features/service%20history/models/decined_model.dart';
 import 'package:pick_a_service/features/service%20history/models/schedule_history_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -206,6 +207,64 @@ class ScheduleHistoryProvider with ChangeNotifier {
       _completeTaskList = [];
 
       _isUpcomingLoading = false;
+      notifyListeners();
+      // OverlayManager.showToast(
+      // type: ToastType.Error, msg: "Something went wrong !");
+      throw e;
+    }
+  }
+
+
+
+
+   // ==================== Declined TASKS ================================
+
+   bool _isDeclinedLoading = false;
+   bool get isDeclinedLoading => _isDeclinedLoading;
+  List<DeclineModel> _declinedList = [];
+  List<DeclineModel> get declinedList => _declinedList;
+  Future<void> declinedTask() async {
+    int techId = await SharedPreferencesManager.getInt("user_id");
+    _isDeclinedLoading = true;
+
+    notifyListeners();
+    String jwt_token = SharedPreferencesManager.getString("jwt_token");
+
+    try {
+      var headers = {'Content-Type': 'application/json' , 'token' : jwt_token};
+      Map<String, dynamic> body = {
+        "technicianId": techId,
+  
+      };
+      http.Response response = await http.post(Uri.parse(DECLINEDLIST),
+          headers: headers, body: jsonEncode(body));
+
+      print(response);
+      var data = jsonDecode(response.body);
+      print(data);
+      List<DeclineModel> list = [];
+      if (response.statusCode == 200) {
+        for (var i in data["result"]) {
+          DeclineModel _model = DeclineModel.fromJson(i);
+          list.add(_model);
+        }
+        _declinedList = list;
+        _isDeclinedLoading = false;
+
+        notifyListeners();
+      } else {
+        _declinedList = [];
+        _isDeclinedLoading = false;
+        notifyListeners();
+        // OverlayManager.showToast(
+        // type: ToastType.Error, msg: "Something went wrong !");
+
+        // throw data["message"];
+      }
+    } catch (e) {
+      _completeTaskList = [];
+
+      _isDeclinedLoading = false;
       notifyListeners();
       // OverlayManager.showToast(
       // type: ToastType.Error, msg: "Something went wrong !");

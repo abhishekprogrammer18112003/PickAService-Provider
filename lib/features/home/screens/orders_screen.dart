@@ -14,6 +14,8 @@ import 'package:pick_a_service/features/home/models/accepted_models.dart';
 import 'package:pick_a_service/features/home/widgets/accept_decline_orders.dart';
 import 'package:pick_a_service/features/home/widgets/orders_widget.dart';
 import 'package:pick_a_service/features/ticket_details_provider.dart';
+import 'package:pick_a_service/flutter_background_service_10min.dart';
+import 'package:pick_a_service/flutter_background_service_15sec.dart';
 import 'package:pick_a_service/location_service.dart';
 import 'package:pick_a_service/route/app_pages.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
@@ -180,12 +182,51 @@ class _OrdersScreenState extends State<OrdersScreen> {
             // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
             child: widget.arguments["day"] ==
                     AppLocalizations.of(context)!.today.toLowerCase()
+                ? _buildSendTrackingLink()
+                : Container(),
+          ),
+          CustomSpacers.height10,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 44.w),
+            // child: AcceptRejectOrdersWidget(data: data! , arguments: {"day": widget.arguments["day"], "ind": widget.arguments["ind"]},),
+            child: widget.arguments["day"] ==
+                    AppLocalizations.of(context)!.today.toLowerCase()
                 ? _buildButtons()
                 : Container(),
           ),
           CustomSpacers.height32,
         ],
       );
+
+  _buildSendTrackingLink() {
+    final p = Provider.of<HomeProvider>(context, listen: false);
+    return GestureDetector(
+      onTap: () {
+        p.sendTrack(context, data!.CustomerId, data!.ticketId);
+      },
+      child: Consumer<HomeProvider>(
+        builder: (context, value, child) => !value.isTrack
+            ? Center(
+                child: CustomAcceptButtonWidget(
+                  text: "send Tracking link",
+                  height: 34.h,
+                  width: 250.w,
+                  radius: 7.r,
+                  image: AppIcons.profileFaq,
+                  style: TextStyle(
+                      fontSize: 10.w,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondary),
+                  color: Color.fromARGB(255, 0, 184, 169),
+                ),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
+    );
+  }
+
   _buildNameMobileWidget() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
@@ -611,6 +652,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 print(status);
                                 if (status ==
                                     AppLocalizations.of(context)!.start) {
+                                      // await stopBackgroundService();
+                                      // await initializeService15secs();
                                   locationService.startLocationService(false);
                                   notificationProvider.acceptOrder(
                                       data!.ticketId, "Start", context);
@@ -621,6 +664,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   });
                                 } else if (status ==
                                     AppLocalizations.of(context)!.reached) {
+                                      // await stopBackgroundService();
+                                      // await initializeService();
                                   locationService.startLocationService(true);
                                   notificationProvider.acceptOrder(
                                       data!.ticketId, "Reached", context);
@@ -799,8 +844,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 if (status ==
                                     AppLocalizations.of(context)!.start) {
                                   await notificationProvider.declineOrder(
-                                      data!.ticketId, context);
-                                  Navigator.pop(context);
+                                      data!.ticketId, context).then((v){
+                                        Navigator.pop(context);
+                                      });
+                                  
                                 }
 
                                 if (status ==

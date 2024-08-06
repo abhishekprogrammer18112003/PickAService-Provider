@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, duplicate_import, unnecessary_import
+// ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +6,6 @@ import 'package:pick_a_service/core/app_imports.dart';
 import 'package:pick_a_service/core/constants/app_images.dart';
 import 'package:pick_a_service/core/loaded_widget.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
-import 'package:pick_a_service/features/onboarding/data/provider/login_provider.dart';
 import 'package:pick_a_service/features/onboarding/data/provider/login_provider.dart';
 import 'package:pick_a_service/features/onboarding/widgets/choose_lang_widget.dart';
 import 'package:pick_a_service/features/onboarding/widgets/custom_textfield_widget.dart';
@@ -17,6 +16,7 @@ import 'package:pick_a_service/ui/molecules/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -27,16 +27,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
- 
-
- 
-  
   String lang = "en";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.black,
       body: Stack(
         children: [
           Image.asset(
@@ -62,10 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomSpacers.height70,
-            //Icons
+            // Icons
             Container(
-              height : 42.h,
-              width:  500.w, 
+              height: 42.h,
+              width: 500.w,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Image.asset(
@@ -78,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomSpacers.height160,
             CustomSpacers.height10,
 
-            //Text field email
+            // Text field email
             CustomTextFieldWidget(
               obsecure: false,
               controller: _emailController,
@@ -88,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             CustomSpacers.height16,
 
-            //textField Passord
+            // Text field password
             CustomTextFieldWidget(
               obsecure: true,
               controller: _passwordController,
@@ -98,29 +93,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             CustomSpacers.height16,
 
-            //Forget Password
-            // const Align(
-            //     alignment: Alignment.centerRight,
-            //     child: Text(
-            //       "Forgot your password?",
-            //       style: TextStyle(
-            //           fontSize: 12,
-            //           fontWeight: FontWeight.w600,
-            //           color: AppColors.secondary),
-            //     )),
-
-            CustomSpacers.height24,
+            // Custom button
             Center(
               child: CustomButton(
                 strButtonText: AppLocalizations.of(context)!.login,
                 buttonAction: () {
-                  if (_emailController.text.isEmpty ||
-                      _passwordController.text.isEmpty) {
+                  FocusScope.of(context).unfocus();
+                  if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
                     OverlayManager.showToast(
-                        type: ToastType.Alert, msg: "please enter data !");
+                        type: ToastType.Alert, msg: "please enter data!");
                   } else {
-                    loginProvider.getLoginData(_emailController.text,
-                        _passwordController.text, context, lang);
+                    loginProvider.getLoginData(
+                        _emailController.text, _passwordController.text, context, lang);
                   }
                 },
                 isLoading: loginProvider.isLoading,

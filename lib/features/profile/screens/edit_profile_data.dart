@@ -259,6 +259,7 @@ class _EditProfileDataPageState extends State<EditProfileDataPage> {
                               ? AppLocalizations.of(context)!.editprofile
                               : AppLocalizations.of(context)!.savechanges,
                           buttonAction: () async {
+                            print(_image!.path);
                             if (!otp &&
                                 widget.data["FullName"] !=
                                     _nameController.text &&

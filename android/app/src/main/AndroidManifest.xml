@@ -3,6 +3,7 @@
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 <uses-permission android:name="android.permission.WAKE_LOCK"/>
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application tools:replace="android:label" android:label="PickAService provider" android:name="${applicationName}" android:icon="@mipmap/launcher_icon">
@@ -22,7 +23,7 @@
         <meta-data android:name="flutterEmbedding" android:value="2"/>
         <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="high_importance_channel"/>
         <service android:name="com.ekasetiawans.flutter_background_service.BackgroundService" android:permission="android.permission.FOREGROUND_SERVICE" android:exported="false"/>
-      
+ 
     </application>
 
 

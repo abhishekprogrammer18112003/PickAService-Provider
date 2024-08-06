@@ -4,7 +4,7 @@ class ScheduleHistoryModel {
     required this.CustomerId,
     required this.WorkStatus,
     required this.SubCategoryId,
-     this.CompanyId,
+    required this.CompanyId,
     required this.TechnicianId,
     required this.Descriptions,
     required this.Priority,
@@ -24,10 +24,12 @@ class ScheduleHistoryModel {
     required this.CategoryId,
     required this.CategoryNameEn,
     required this.CategoryNameAr,
+    required this.color,
     required this.NameOfAddress,
     required this.Area,
     required this.Block,
     required this.Street,
+    required this.Building,
     required this.Floor,
     required this.FlatsNo,
     required this.BuildingType,
@@ -40,7 +42,7 @@ class ScheduleHistoryModel {
   late final int CustomerId;
   late final String WorkStatus;
   late final int SubCategoryId;
-  late final Null CompanyId;
+  late final int CompanyId;
   late final int TechnicianId;
   late final String Descriptions;
   late final String Priority;
@@ -60,10 +62,12 @@ class ScheduleHistoryModel {
   late final int CategoryId;
   late final String CategoryNameEn;
   late final String CategoryNameAr;
+  late final String color;
   late final String NameOfAddress;
   late final String Area;
   late final String Block;
   late final String Street;
+  late final String Building;
   late final String Floor;
   late final String FlatsNo;
   late final String BuildingType;
@@ -77,7 +81,7 @@ class ScheduleHistoryModel {
     CustomerId = json['CustomerId'];
     WorkStatus = json['WorkStatus'];
     SubCategoryId = json['SubCategoryId'];
-    CompanyId = null;
+    CompanyId = json['CompanyId'];
     TechnicianId = json['TechnicianId'];
     Descriptions = json['Descriptions'];
     Priority = json['Priority'];
@@ -97,10 +101,12 @@ class ScheduleHistoryModel {
     CategoryId = json['CategoryId'];
     CategoryNameEn = json['CategoryNameEn'];
     CategoryNameAr = json['CategoryNameAr'];
+    color = json['color'];
     NameOfAddress = json['NameOfAddress'];
     Area = json['Area'];
     Block = json['Block'];
     Street = json['Street'];
+    Building = json['Building'];
     Floor = json['Floor'];
     FlatsNo = json['FlatsNo'];
     BuildingType = json['BuildingType'];
@@ -136,10 +142,12 @@ class ScheduleHistoryModel {
     _data['CategoryId'] = CategoryId;
     _data['CategoryNameEn'] = CategoryNameEn;
     _data['CategoryNameAr'] = CategoryNameAr;
+    _data['color'] = color;
     _data['NameOfAddress'] = NameOfAddress;
     _data['Area'] = Area;
     _data['Block'] = Block;
     _data['Street'] = Street;
+    _data['Building'] = Building;
     _data['Floor'] = Floor;
     _data['FlatsNo'] = FlatsNo;
     _data['BuildingType'] = BuildingType;

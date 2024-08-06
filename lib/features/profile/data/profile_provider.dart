@@ -222,11 +222,17 @@ class ProfileProvider extends ChangeNotifier {
       var data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        OverlayManager.showToast(
+                                  type: ToastType.Success,
+                                  msg: "Number changed successfully!");
         _isEditLoading = false;
         notifyListeners();
         CustomNavigator.pop(context);
         CustomNavigator.pop(context);
       } else {
+        OverlayManager.showToast(
+                                  type: ToastType.Alert,
+                                  msg: "Please enter correct OTP!");
         print("error");
         _isEditLoading = false;
         notifyListeners();

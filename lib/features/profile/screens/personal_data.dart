@@ -162,7 +162,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                           CustomSpacers.height10,
                           Container(
                             height: 50.h,
-                            width: 350.w,
+                            width: 340.w,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10.0),
@@ -196,7 +196,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                                     value.profileDataModel["isPhoneVerified"] ==
                                             "1"
                                         ? Icon(Icons.verified)
-                                        : Container(),
+                                        : Icon(Icons.verified , color : Colors.white),
       
                                 hintText: _phoneNoController.text,
                                 hintStyle: TextStyle(

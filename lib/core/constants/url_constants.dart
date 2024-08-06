@@ -1,9 +1,10 @@
 // ignore_for_file: constant_identifier_names, unnecessary_brace_in_string_interps
 
-  const String BASE_URL = "https://live.pickaservice.com";
+    const String BASE_URL = "https://live.pickaservice.com";
 
 //=====================Auth Api's ===========================
 const String LOGIN = "${BASE_URL}/api/auth/webLogin";
+const String TECHNICIANACTIVATION = "${BASE_URL}/api/technician/checkTechnician";
 
 //==================== Notification Api's =====================
 
@@ -46,6 +47,7 @@ const String GETCHECKLIST =
 
 const String COMPLETED = "${BASE_URL}/api/tickets/completedTickets";
 const String OFFLINEPAYMENT = "${BASE_URL}/api/payment/offline";
+const String DECLINEDLIST = "${BASE_URL}/api/tickets/declinedOrders";
 
 //====================== PROFILE ============================================
 
@@ -54,5 +56,8 @@ const String PERSONALDATA = "${BASE_URL}/api/profile/getProfileDataUsingId";
 const String EDITPROFILE = "${BASE_URL}/api/profile/updateUserProfile";
 const String GETOTP = "${BASE_URL}/api/profile/updatePhone";
 const String CHANGEPASSWORD = "${BASE_URL}/api/profile/updateUserProfile";
+
+
+const String SENDTRACKINGLINK = "${BASE_URL}/api/tickets/sendToCustomer";
 
 

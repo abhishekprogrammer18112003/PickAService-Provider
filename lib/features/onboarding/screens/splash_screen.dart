@@ -2,11 +2,13 @@
 
 import 'dart:async';
 import 'dart:developer';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pick_a_service/core/constants/app_data.dart';
 import 'package:pick_a_service/core/managers/app_manager.dart';
 import 'package:pick_a_service/core/managers/shared_preference_manager.dart';
 import 'package:pick_a_service/core/utils/screen_utils.dart';
+import 'package:pick_a_service/features/onboarding/data/provider/login_provider.dart';
 import 'package:pick_a_service/features/onboarding/screens/login_screen.dart';
 import 'package:pick_a_service/language_provider.dart';
 import 'package:pick_a_service/main.dart';
@@ -42,29 +44,56 @@ class _SplashScreenState extends State<SplashScreen> {
             .changeLanguage(Locale('ar'));
       });
     }
-
+   
+    
     if (SharedPreferencesManager.getBool("isLogin")) {
-      Timer(const Duration(seconds: 3), () {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return NavBarScreen();
-            },
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              );
-            },
-          ),
+    String email = await SharedPreferencesManager.getString("email_id");
+ final p = Provider.of<LoginProvider>(context, listen: false);
+    await p.getTechnicianActivation(email);
+    print(p.isActive);
+      if (p.isActive == 1) {
+        Timer(const Duration(seconds: 3), () {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return NavBarScreen();
+              },
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+          );
+          // CustomNavigator.pushReplace(context, AppPages.navbar);
+        });
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Account Deactivated'),
+              content: Text(
+                  'Your account has been deactivated by Admin. Contact admin to know more.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    SystemNavigator.pop();
+                  },
+                ),
+              ],
+            );
+          },
         );
-        // CustomNavigator.pushReplace(context, AppPages.navbar);
-      });
+      }
     } else {
       Timer(const Duration(seconds: 3), () {
         Navigator.pushReplacement(

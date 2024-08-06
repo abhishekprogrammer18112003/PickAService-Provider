@@ -192,6 +192,7 @@ class _CheckListScreenState extends State<CheckListScreen> {
                         hintText: AppLocalizations.of(context)!.model,
                         validator: (v) {},
                         onChanged: (v) {
+                          print(v);
                           setState(() {
                             modelID = v;
                           });

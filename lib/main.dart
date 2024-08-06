@@ -16,6 +16,7 @@ import 'package:pick_a_service/features/onboarding/screens/splash_screen.dart';
 import 'package:pick_a_service/features/profile/data/profile_provider.dart';
 import 'package:pick_a_service/features/service%20history/data/schedule_history_provider.dart';
 import 'package:pick_a_service/features/ticket_details_provider.dart';
+import 'package:pick_a_service/flutter_background_service_10min.dart';
 import 'package:pick_a_service/language_provider.dart';
 import 'package:pick_a_service/notification_service.dart';
 import 'package:pick_a_service/route/custom_navigator.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 String lang = "";
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await AppManager.initialize();
   FirebaseMessaging.onBackgroundMessage(_FirebaseMessagingBackgroundHandler);
   runApp(const MyApp());
@@ -49,8 +51,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     notificationService.requestNotificationPermission();
-   
-
     getDeviceID();
     notificationService.setupInteractMessage(context);
     notificationService.firebaseInit(context);
